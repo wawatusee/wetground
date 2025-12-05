@@ -41,15 +41,11 @@ font-size: 1.6em;
 main{
   padding: 15px;
 }
-#galleryForm {
+/*#galleryForm {
     display:none;
-}
+}*/
 /*Liens dans la page contacts*/
-.navfooterbloc a:hover{
-  ! text-decoration: none;
-    ! text-emphasis: 100;
-  color: var(--secondary-blue-color);
-  }
+
 
 .navfooterbloc a{
 padding-left: 10px;
