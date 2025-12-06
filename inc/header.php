@@ -1,7 +1,7 @@
 <header>
    <div class="mainTitleBlock">
       <h1 class="mainsubtitle">
-            <span class="title-elmt">vue sur verre</span>
+            <span class="title-elmt">Wetground</span>
       </h1>
       <h2>modern stained glass</h2>
    </div>

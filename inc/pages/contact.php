@@ -8,7 +8,7 @@ This website is a broadcasting platform; as for the rest, the best way to get in
         <img  src="<?=$repDeco?>portrait-anne.gif" alt="Portrait de l'artiste">
     </div>
     <ul class="contacts">
-        <li> <a class=" contacts-maillink" href="mailto:contact@wawatusee.com">contact[at]wawatusee.com</a>
+        <li> <a class=" contacts-maillink" href="mailto:info@vuesurverre.be">info[at]vuesurverre.be</a>
         </li>
     </ul>
 </div>

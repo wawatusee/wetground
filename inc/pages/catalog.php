@@ -1,7 +1,6 @@
-<!-- <h2 class="invisible-titre">Galeries</h2> -->
-
-<p> 
-the pieces displayed on this page are not for sale. If you're interested in a picture on glass, don't hesitate to contact me. You can choose colour and size!</p>
+<p>
+    the pieces displayed on this page are not for sale. If you're interested in a picture on glass, don't hesitate to
+    contact me. You can choose colour and size!</p>
 
 
 <?php
@@ -12,25 +11,29 @@ $page = isset($_GET['page']) ? htmlspecialchars($_GET['page']) : 1;
 // Inclure les modèles et vues
 require_once('../src/model/model_galleries_choices.php');
 //remplacement du sélecteur par un menu simple
+// L'ancienne vue est commentée
 //require_once('../src/view/view_galleries_choices.php');
 
+// Inclusion de la nouvelle vue
 require_once('../src/view/view_gallery_menu.php');
 
-// Récupérer les données des galeries
-/*$galleriesDatas = new ModelGalleryChoices('img/content/galleries/');
-$galleryChoices = $galleriesDatas->getGalleryChoices(); // Récupérer le tableau des galeries*/
-// Instancier et afficher le NOUVEAU menu de galerie
+// Récupérer les données des galeries (DECOMMENTÉ)
+$galleriesDatas = new ModelGalleryChoices('img/content/galleries/');
+$galleryChoices = $galleriesDatas->getGalleryChoices(); // Récupérer le tableau des galeries
+
+// Instancier et afficher le NOUVEAU menu de galerie (ACTIVÉ)
 $menuComponent = new ViewGalleryMenu($galleryChoices, $page, $selectedGallery);
 $menuComponent->render(); // Affichage direct du menu
 
-// Instancier et afficher le sélecteur de galerie
+// Instancier et afficher le sélecteur de galerie (COMMENTÉ)
+/*
 $multiChoicesComponent = new ViewGalleryChoices($galleryChoices, $page, $selectedGallery);
 $multiChoicesComponent->render(); // Affichage direct du sélecteur
+*/
 
 // Définir la galerie courante à afficher
-$galleryName = !empty($selectedGallery) && in_array($selectedGallery, $galleryChoices) 
-               ? $selectedGallery 
-               : (isset($galleryChoices[0]) ? $galleryChoices[0] : null);
+$galleryName = !empty($selectedGallery) && in_array($selectedGallery, $galleryChoices)
+    ? $selectedGallery : (isset($galleryChoices[0]) ? $galleryChoices[0] : null);
 
 // Inclure et afficher les vues de la galerie
 require_once('../src/model/gallery_model.php');
@@ -44,12 +47,13 @@ try {
     $gallery = new Model_gallery($cheminImages, 'image/jpeg');
     $images = $gallery->getImages();
     //Important, en deuxième paramètre de l'instance de View_gallery, le nom du dossier à traiter $galleryName
-    // Crée la vue avec la classe View_gallery
+// Crée la vue avec la classe View_gallery
     $view = new View_gallery($images, $galleryName);
     echo $view->render(); // Affiche la galerie
 } catch (Exception $e) {
     echo "Erreur : " . $e->getMessage();
 }
+?>
 ?>
 <!-- /container -->
 <script src="js/imagesloaded.pkgd.min.js"></script>
@@ -57,7 +61,7 @@ try {
 <script src="js/classie.js"></script>
 <script src="js/main.js"></script>
 <script>
-    (function() {
+    (function () {
         // create SVG circle overlay and append it to the preview element
         function createCircleOverlay(previewEl) {
             var dummy = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -76,13 +80,13 @@ try {
         }
 
         new GridFx(document.querySelector('.grid'), {
-            onInit: function(instance) {
+            onInit: function (instance) {
                 createCircleOverlay(instance.previewEl);
             },
-            onResize: function(instance) {
+            onResize: function (instance) {
                 instance.previewEl.querySelector('svg circle').setAttributeNS(null, 'r', Math.sqrt(Math.pow(instance.previewEl.offsetWidth, 2) + Math.pow(instance.previewEl.offsetHeight, 2)));
             },
-            onOpenItem: function(instance, item) {
+            onOpenItem: function (instance, item) {
                 // item's image
                 var gridImg = item.querySelector('img'),
                     gridImgOffset = gridImg.getBoundingClientRect(),

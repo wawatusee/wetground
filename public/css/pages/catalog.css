@@ -211,3 +211,33 @@
 	height: 0;
 	color: transparent;
 }
+/*Menu de la page*/
+/* Style de base pour le conteneur */
+.gallery-menu {
+    list-style: none; /* Enlève les puces */
+    padding: 0;
+    margin: 0;
+}
+
+/* Style de chaque élément de menu */
+.gallery-item a {
+    display: block;
+    padding: 8px 15px;
+    text-decoration: none;
+    color: #333;
+    border: 1px solid #ccc;
+    margin-bottom: -1px; /* Pour que les bordures se touchent */
+    background-color: #f9f9f9;
+}
+
+/* Effet au survol */
+.gallery-item a:hover {
+    background-color: #eee;
+}
+
+/* Style de l'élément actuellement sélectionné */
+.gallery-item.selected-item a {
+    font-weight: bold;
+    background-color: #e0f7fa; /* Couleur d'accentuation */
+    border-color: #00bcd4;
+}

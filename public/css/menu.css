@@ -1,91 +1,145 @@
-/*MENUS*/
+  /*MENUS*/
+  /**********************/
+  /*Liste déroulante Langues*/
+  /* Style pour la liste déroulante */
+  .menulangues {
+    display: flex;
+    justify-content: end;
+    margin-right: 0.5em;
+  }
+
+  select#lang {
+    padding: 1.5px;
+    border: none;
+    font-size: 0.8em;
+
+    color: var(--main-dark-color);
+    /* Couleur du texte */
+    margin-bottom: 2px;
+    margin-left: 2px;
+  }
+
+  /* Style pour les options de la liste déroulante */
+  select#lang option {
+    border: none;
+    color: var(--main-dark-color);
+    /* Couleur du texte */
+  }
+
+  /* Style pour le bouton de soumission (peut être personnalisé selon vos besoins) */
+  input[type="submit"] {
+    padding: 10px 20px;
+    /*color: #fff;
+    /* Couleur du texte blanc */
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  /*Fin liste déroulante langues*/
+  /**********************/
+  
+/* MENUS */
 /**********************/
 
-/*mainMenu*/
-/**********************/
-.links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-}
-
-.responsiveMenu {
-  /*font-family: Verdana, Geneva, Tahoma, sans-serif, sans-serif;*/
-    font-family: MyHomeFont;
-}
-header {
-  color: var(--main-clear-color);
-}
-
-.responsiveMenu {
-  overflow: hidden;
-}
+/* Navigation principale (desktop par défaut) */
 .responsiveMenu {
   display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  /*font-family: Verdana, Geneva, Tahoma, sans-serif, sans-serif;*/
-    font-family: MyHomeFont;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 0 20px;
+  box-sizing: border-box;
   margin-top: 5px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
+
 .responsiveMenu a {
-  padding: 10px 20px;
-  display: inline;
-  text-decoration: none;
-  /*background-color: var(--main-clear-color);*/
-  color: var(--main-dark-color);
+  color: var(--main-clear-color);
+  background-color: var(--grey-clear-color);
+  text-align: center;
+  padding: 8px 12px;
   border-radius: 5px;
-  font-size: 1.2rem;
-  transition: background-color 0.3s;
-}
-.responsiveMenu a:hover {
-  /*color: var(--secondary-blue-color);*/
-  /*background-color: var(--main-dark-color);*/
-    font-weight: 800;
+  text-decoration: none;
+  margin: 0.2em 15px;
+  font-size: 1.4em;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* Hover seulement si périphérique le permet */
+@media (hover: hover) {
+  .responsiveMenu a:hover {
+    background-color: var(--main-dark-color);
+    color: var(--secondary-blue-color);
+  }
+}
+
+/* Lien actif */
 .responsiveMenu a.active {
-  /*background-color: var(--secondary-blue-color);
-  color: var(--main-clear-color);*/
-    font-weight: 800;
+  background-color: var(--main-dark-color);
+  color: var(--secondary-blue-color);
+  font-weight: bold;
 }
 
+/* Icône du menu burger (base desktop = cachée) */
 .responsiveMenu .icon {
   display: none;
-  margin: 0 15px 0 15px;
-  height: fit-content;
+  font-size: 1.5em;
+  cursor: pointer;
+  background: none;
+  border: none;
+  color: var(--main-dark-color);
 }
 
+/* Hover de l’icône */
+@media (hover: hover) {
+  .responsiveMenu .icon:hover {
+    background-color: var(--main-dark-color);
+    color: var(--secondary-blue-color);
+  }
+}
+
+/**********************/
+/* Mode responsive */
+/**********************/
 @media screen and (max-width: 600px) {
+  .responsiveMenu {
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 1rem;
+  }
+
   .responsiveMenu a {
+    color: var(--main-dark-color);
     display: none;
+    width: 100%;
+    text-align: center;
+    background: none;
   }
-  .responsiveMenu a.icon {
-    /*float: left;*/
-    display: block;
-  }
-}
 
-@media screen and (max-width: 600px) {
-  .responsiveMenu.responsive {
-    position: relative;
-  }
-  /*.responsiveMenu.responsive .icon {
-    position: absolute;
-
-    top: -60px;
-  }*/
   .responsiveMenu.responsive a {
-
     display: block;
-    text-align: left;
+    animation: fadeIn 0.25s ease;
+  }
+
+  .responsiveMenu .icon {
+    background-color: var(--grey-clear-color);
+    color: var(--main-clear-color);
+    padding: 10px 15px;
+    border-radius: 15%;
+    text-align: right;
+    display: block;
+    /* margin-left: auto;  👈 tu peux décommenter quand tu veux la pousser à droite */
   }
 }
 
-/*Texte information*/
+/**********************/
+/* Section information (autre composant) */
+/**********************/
 .information {
   padding: var(--content-padding);
   background-color: var(--main-clear-color);
 }
-/*End mainMENUS*/
+
+/**********************/
+/* Fin des menus */
 /**********************/

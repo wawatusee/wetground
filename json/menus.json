@@ -1,23 +1,12 @@
 {
   "Main_menu": [
-    {
-      "page": "lead&tiffany",
+
+        {
+      "page": "catalog",
       "titre": {
-        "fr": "lead & tiffany",
+        "fr": "Catalogue",
         "nl":"",
         "en":""
-      }
-    },
-    {
-      "page": "pictureonglass",
-      "titre": {
-        "fr": "picture on glass"
-      }
-    },
-    {
-      "page": "personalisedprojects",
-      "titre": {
-        "fr": "personalised projects"
       }
     },
     {
