@@ -212,32 +212,70 @@
 	color: transparent;
 }
 /*Menu de la page*/
-/* Style de base pour le conteneur */
+/* 1. Conteneur Global du Menu (UL) */
+/* 1. Conteneur Global du Menu (UL) */
 .gallery-menu {
-    list-style: none; /* Enlève les puces */
+    /* Disposition en ligne (Flexbox) */
+    display: flex; 
+    
+    /* ************************************************* */
+    /* NOUVELLE LIGNE POUR LE CENTRAGE HORIZONTAL */
+    justify-content: center; 
+    /* ************************************************* */
+    
+    flex-wrap: wrap; 
+    
+    list-style: none; 
     padding: 0;
-    margin: 0;
+    margin: var(--standartspace) 0; 
+    gap: var(--standartspace);
 }
 
-/* Style de chaque élément de menu */
+/* Le reste du CSS pour .gallery-item et a reste inchangé. */
+
+/* 2. Élément de Menu Individuel (LI) */
+/*
+Note: Avec gap sur le UL, nous n'avons plus besoin de margin-right sur le LI,
+ce qui simplifie la gestion des marges.
+*/
+.gallery-item {
+    /* Le LI est défini par son contenu */
+}
+
+/* 3. Style du Lien (A) - L'élément cliquable */
 .gallery-item a {
     display: block;
-    padding: 8px 15px;
+    
+    /* Padding basé sur la variable d'espacement */
+    padding: var(--content-padding) calc(var(--standartspace) * 1.5); 
+    
     text-decoration: none;
-    color: #333;
-    border: 1px solid #ccc;
-    margin-bottom: -1px; /* Pour que les bordures se touchent */
-    background-color: #f9f9f9;
+    
+    /* Couleurs de base du bouton */
+    color: var(--main-dark-color); /* Texte sombre */
+    background-color: var(--first-color); /* Couleur claire de fond (premier plan) */
+    
+    border: 1px solid var(--first-color); /* Bordure basée sur la première couleur */
+    border-radius: 4px; 
+    font-family: "myFirstFont"; /* Utilisation d'une police plus lisible pour les options */
+    white-space: nowrap; /* Empêche les noms de galerie de se couper */
+    transition: background-color 0.2s, color 0.2s; /* Transition douce pour le survol */
 }
 
-/* Effet au survol */
-.gallery-item a:hover {
-    background-color: #eee;
-}
-
-/* Style de l'élément actuellement sélectionné */
+/* 4. Style de l'Élément Actuellement Sélectionné */
 .gallery-item.selected-item a {
     font-weight: bold;
-    background-color: #e0f7fa; /* Couleur d'accentuation */
-    border-color: #00bcd4;
+    
+    /* Couleur d'accentuation pour l'élément actif */
+    background-color: var(--secondary-blue-color); 
+    color: var(--main-clear-color); /* Texte clair sur fond bleu */
+    border-color: var(--secondary-blue-color);
+}
+
+/* 5. Effet au Survol (Hover) */
+/* S'applique uniquement aux éléments NON sélectionnés */
+.gallery-item a:hover:not(.selected-item a) {
+    /* Un léger changement de couleur au survol */
+    background-color: var(--grey-clear-color); 
+    border-color: var(--grey-clear-color);
 }

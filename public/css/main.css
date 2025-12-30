@@ -55,8 +55,8 @@ padding-left: 10px;
   .contacts-maillink::before{
     content:url('/public/img/deco/icons8-mail-30.png');
     position: relative;
-    top: 10px;
-    left: 10px;
+    top: 0.3em;
+    left: -10px;
   }
   .contacts-phonelink::before{
     content:url('/public/img/deco/icons8-phone-30.png');

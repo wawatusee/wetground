@@ -1,12 +1,9 @@
 {
   "Main_menu": [
-
-        {
-      "page": "catalog",
+    {
+      "page": "openatelier",
       "titre": {
-        "fr": "Catalogue",
-        "nl":"",
-        "en":""
+        "fr": "open atelier"
       }
     },
     {
@@ -16,9 +13,11 @@
       }
     },
     {
-      "page": "openatelier",
+      "page": "catalog",
       "titre": {
-        "fr": "open atelier"
+        "fr": "catalogue",
+        "nl": "",
+        "en": "catalog"
       }
     },
     {

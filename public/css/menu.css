@@ -50,15 +50,14 @@
   padding: 0 20px;
   box-sizing: border-box;
   margin-top: 5px;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
+
 }
 
 .responsiveMenu a {
-  color: var(--main-clear-color);
-  background-color: var(--grey-clear-color);
+  color: var(--main-dark-color);
   text-align: center;
   padding: 8px 12px;
-  border-radius: 5px;
+  border-radius: 3px;
   text-decoration: none;
   margin: 0.2em 15px;
   font-size: 1.4em;
@@ -68,16 +67,19 @@
 /* Hover seulement si périphérique le permet */
 @media (hover: hover) {
   .responsiveMenu a:hover {
-    background-color: var(--main-dark-color);
-    color: var(--secondary-blue-color);
+    /*background-color: var(--main-dark-color);*/
+    text-decoration: underline;
+    border: 0.5px;
+    color: var(--main-dark-color);
   }
 }
 
 /* Lien actif */
 .responsiveMenu a.active {
-  background-color: var(--main-dark-color);
-  color: var(--secondary-blue-color);
-  font-weight: bold;
+ /* background-color: var(--main-dark-color);*/
+ border-style: solid;
+  color: var(--main-dark-color);
+  /*font-weight: bold;*/
 }
 
 /* Icône du menu burger (base desktop = cachée) */
@@ -93,8 +95,9 @@
 /* Hover de l’icône */
 @media (hover: hover) {
   .responsiveMenu .icon:hover {
-    background-color: var(--main-dark-color);
-    color: var(--secondary-blue-color);
+    /*background-color: var(--main-dark-color);*/
+    border-style: solid;
+    /*color: var(--secondary-blue-color);*/
   }
 }
 
@@ -122,8 +125,11 @@
   }
 
   .responsiveMenu .icon {
-    background-color: var(--grey-clear-color);
-    color: var(--main-clear-color);
+   /* background-color: var(--grey-clear-color);
+    
+    color: var(--main-clear-color);*/
+     /* background-color: var(--main-dark-color);*/
+
     padding: 10px 15px;
     border-radius: 15%;
     text-align: right;
