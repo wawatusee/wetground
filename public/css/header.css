@@ -39,3 +39,21 @@ padding: 10px;
 
 /*End header*/
 /**********************/
+.menulangues {
+    display: flex;
+    gap: .5rem;
+    align-items: center;
+}
+
+.menulangues a {
+    text-decoration: none;
+    padding: .2rem .5rem;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    font-size: .9rem;
+}
+
+.menulangues a.active-lang {
+    font-weight: bold;
+    border-color: black;
+}

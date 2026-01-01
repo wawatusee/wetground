@@ -3,44 +3,34 @@
     {
       "page": "openatelier",
       "titre": {
-        "fr": "open atelier",
-        "en": "open studio",
-        "nl": "open atelier"
+        "fr": "open atelier"
       }
     },
     {
       "page": "workshops",
       "titre": {
-        "fr": "ateliers",
-        "en": "workshops",
-        "nl": "workshops"
+        "fr": "workshops"
       }
     },
     {
       "page": "catalog",
       "titre": {
         "fr": "catalogue",
-        "en": "catalog",
-        "nl": "catalogus"
+        "nl": "",
+        "en": "catalog"
       }
     },
     {
       "page": "contact",
       "titre": {
-        "fr": "contact",
-        "en": "contact",
-        "nl": "contact"
+        "fr": "contact"
       }
     }
   ],
   "RS_menu": [
     {
       "page": "https://www.instagram.com/anne_b._sollis?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==/",
-      "titre": {
-        "fr": "instagram",
-        "en": "instagram",
-        "nl": "instagram"
-      }
+      "titre": "instagram"
     }
   ]
 }
