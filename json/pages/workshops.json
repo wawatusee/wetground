@@ -1,0 +1,15 @@
+{
+    "title": {
+        "fr": "workshops.json",
+        "en": "workshops.json"
+    },
+    "blocks": [
+        {
+            "type": "text",
+            "content": {
+                "fr": "",
+                "en": ""
+            }
+        }
+    ]
+}

@@ -1,0 +1,15 @@
+{
+    "title": {
+        "fr": "contact.json",
+        "en": "contact.json"
+    },
+    "blocks": [
+        {
+            "type": "text",
+            "content": {
+                "fr": "",
+                "en": ""
+            }
+        }
+    ]
+}
