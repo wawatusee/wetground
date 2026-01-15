@@ -130,15 +130,17 @@ $pageData = ($selectedPath && file_exists($selectedPath))
     <h3>Éditer une page</h3>
 
     <form method="get">
+        <input type="hidden" name="page" value="pages">
+
         <select name="edit" onchange="this.form.submit()">
             <?php foreach ($menuPages as $file): ?>
-                <option value="<?= htmlspecialchars($file) ?>"
-                    <?= ($file === $selectedPage ? 'selected' : '') ?>>
+                <option value="<?= htmlspecialchars($file) ?>" <?= ($file === $selectedPage ? 'selected' : '') ?>>
                     <?= htmlspecialchars($file) ?>
                 </option>
             <?php endforeach; ?>
         </select>
     </form>
+
 
     <?php if ($pageData): ?>
 
@@ -147,15 +149,13 @@ $pageData = ($selectedPath && file_exists($selectedPath))
             <input type="hidden" name="page_file" value="<?= htmlspecialchars($selectedPage) ?>">
 
             <label>Titre FR</label>
-            <input type="text" name="title_fr"
-                   value="<?= htmlspecialchars($pageData['title']['fr'] ?? '') ?>">
+            <input type="text" name="title_fr" value="<?= htmlspecialchars($pageData['title']['fr'] ?? '') ?>">
 
             <label>Titre EN</label>
-            <input type="text" name="title_en"
-                   value="<?= htmlspecialchars($pageData['title']['en'] ?? '') ?>">
+            <input type="text" name="title_en" value="<?= htmlspecialchars($pageData['title']['en'] ?? '') ?>">
 
             <?php
-            $block = $pageData['blocks'][0] ?? ['content' => ['fr'=>'','en'=>'']];
+            $block = $pageData['blocks'][0] ?? ['content' => ['fr' => '', 'en' => '']];
             ?>
 
             <label>Texte FR</label>
