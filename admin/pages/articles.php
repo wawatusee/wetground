@@ -9,7 +9,11 @@ $existingArticles = array_diff(scandir($articlesDir), array('..', '.'));
         <h4>Articles existants</h4>
         <ul>
             <?php foreach ($existingArticles as $file): ?>
-                <li><a href="#"><?= basename($file, '.json') ?></a></li>
+                <li>
+                    <a href="#" class="load-article-link" data-filename="<?= $file ?>">
+                        <?= basename($file, '.json') ?>
+                    </a>
+                </li>
             <?php endforeach; ?>
         </ul>
     </aside>

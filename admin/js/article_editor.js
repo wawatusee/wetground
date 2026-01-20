@@ -10,29 +10,46 @@ let activeLang = 'fr';
 
 // --- Gestion des Blocs (Templates) ---
 const BlockTemplates = {
-    title: (id) => createBlockWrapper(id, 'title', 'Titre (H2)', `
-        ${generateLangInputs(id, 'input')}
-        <input type="hidden" class="block-level" value="2">
+    title: (id, data = null) => createBlockWrapper(id, 'title', 'Titre (H2)', `
+    ${generateLangInputs(id, 'input', '', data)}
+    <input type="hidden" class="block-level" value="${data ? data.level : 2}">
+`),
+    text: (id, data = null) => createBlockWrapper(id, 'text', 'Paragraphe', `
+        ${generateLangInputs(id, 'textarea', '', data)}
     `),
-    text: (id) => createBlockWrapper(id, 'text', 'Paragraphe', `
-        ${generateLangInputs(id, 'textarea')}
-    `),
-    list: (id) => createBlockWrapper(id, 'list', 'Liste à puces', `
-        ${generateLangInputs(id, 'textarea', 'Séparez les éléments par une virgule')}
+    list: (id, data = null) => createBlockWrapper(id, 'list', 'Liste à puces', `
+        ${generateLangInputs(id, 'textarea', 'Séparez les éléments par une virgule', data)}
     `)
 };
 
 // --- Fonctions Utilitaires ---
+function addBlock(type, data = null) {
+    if (BlockTemplates[type]) {
+        // Si on charge, on garde l'ID existant ou on en génère un nouveau
+        const id = data ? (data.id || Date.now()) : Date.now();
+        const newBlock = BlockTemplates[type](id, data);
+        document.getElementById('blocks-workspace').appendChild(newBlock);
+    }
+}
 
-function generateLangInputs(blockId, tag, placeholderSuffix = '') {
-    return SUPPORTED_LANGS.map(lang => `
-        <div class="lang-field" data-lang="${lang}" style="display: ${lang === activeLang ? 'block' : 'none'}">
-            ${tag === 'input' 
-                ? `<input type="text" class="data-${lang}" placeholder="Contenu ${lang.toUpperCase()} ${placeholderSuffix}">`
-                : `<textarea class="data-${lang}" placeholder="Contenu ${lang.toUpperCase()} ${placeholderSuffix}"></textarea>`
+function generateLangInputs(blockId, tag, placeholderSuffix = '', blockData = null) {
+    return SUPPORTED_LANGS.map(lang => {
+        // On vérifie si la donnée est dans .content (paragraphes) ou .text (titres)
+        let val = '';
+        if (blockData) {
+            if (blockData.content && blockData.content[lang]) val = blockData.content[lang];
+            else if (blockData.text && blockData.text[lang]) val = blockData.text[lang];
+        }
+
+        return `
+            <div class="lang-field" data-lang="${lang}" style="display: ${lang === activeLang ? 'block' : 'none'}">
+                ${tag === 'input'
+                ? `<input type="text" class="data-${lang}" value="${val}" ...>`
+                : `<textarea class="data-${lang}" ...>${val}</textarea>`
             }
-        </div>
-    `).join('');
+            </div>
+        `;
+    }).join('');
 }
 
 function createBlockWrapper(id, type, label, content) {
@@ -49,11 +66,66 @@ function createBlockWrapper(id, type, label, content) {
     `;
     return div;
 }
+// Fonction pour charger un article depuis le serveur
+async function loadArticle(filename) {
+    try {
+        const response = await fetch(`api/get_article.php?file=${filename}`);
+        if (!response.ok) throw new Error('Erreur réseau');
+
+        const data = await response.json();
+
+        // 1. On vide l'éditeur actuel
+        const workspace = document.getElementById('blocks-workspace');
+        workspace.innerHTML = '';
+
+        // 2. On remplit les métadonnées (ID/Slug)
+        // Dans loadArticle
+        const idInput = document.getElementById('article-title');
+        if (idInput) {
+            idInput.value = data.meta.id;
+            // On force la mise à jour du petit texte sous le titre
+            document.getElementById('generated-id').textContent = data.meta.id;
+        }
+
+        // 3. On reconstruit les blocs
+        data.content.forEach(block => {
+            // Cette fonction devra être adaptée pour remplir les champs
+            addBlock(block.type, block);
+        });
+
+        console.log("Article chargé avec succès :", filename);
+    } catch (error) {
+        console.error("Erreur:", error);
+        alert("Impossible de charger l'article.");
+    }
+}
+function addTextBlock(container, data = null) {
+    const langs = ['fr', 'en', 'nl'];
+
+    langs.forEach(lang => {
+        const div = document.createElement('div');
+        div.className = `lang-field lang-${lang}`;
+        div.style.display = (lang === 'fr') ? 'block' : 'none';
+
+        const textarea = document.createElement('textarea');
+        textarea.name = `text_${lang}[]`;
+        textarea.placeholder = `Texte en ${lang}...`;
+
+        // --- LA MAGIE EST ICI ---
+        // Si data existe, on remplit le champ avec la traduction correspondante
+        if (data && data.content && data.content[lang]) {
+            textarea.value = data.content[lang];
+        }
+
+        div.appendChild(textarea);
+        container.appendChild(div);
+    });
+}
 
 // --- Événements et Logique ---
 
 // 1. Changement d'onglet
-window.switchEditorLang = function(lang) {
+window.switchEditorLang = function (lang) {
     activeLang = lang;
     // Update boutons
     document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -66,7 +138,7 @@ window.switchEditorLang = function(lang) {
 };
 
 // 2. Génération de l'ID (Slugify)
-document.getElementById('article-title').addEventListener('input', function(e) {
+document.getElementById('article-title').addEventListener('input', function (e) {
     const slug = e.target.value
         .toLowerCase()
         .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // Enlève accents
@@ -76,11 +148,22 @@ document.getElementById('article-title').addEventListener('input', function(e) {
     document.getElementById('generated-id').textContent = slug || '--';
 });
 
-// 3. Ajouter un bloc
+
+// 3. Ajouter un bloc (bouton +)
 document.getElementById('add-block-trigger').addEventListener('click', () => {
     const type = document.getElementById('new-block-type').value;
-    if (BlockTemplates[type]) {
-        const newBlock = BlockTemplates[type](Date.now());
-        document.getElementById('blocks-workspace').appendChild(newBlock);
-    }
+    addBlock(type); // On ne passe pas de data, donc il sera vide
+});
+// Initialisation des liens de la sidebar au chargement du DOM
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.load-article-link').forEach(link => {
+        link.addEventListener('click', function (e) {
+            e.preventDefault();
+            const filename = this.getAttribute('data-filename');
+
+            if (confirm("Charger cet article ? Les modifications non enregistrées seront perdues.")) {
+                loadArticle(filename);
+            }
+        });
+    });
 });
