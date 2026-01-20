@@ -19,3 +19,5 @@ define('JSON_ARTICLES_DIR', ROOT_PATH . 'json/articles' . DIRECTORY_SEPARATOR);
 
 // Chemin vers le loader et les modèles
 define('JSON_LOADER', ROOT_PATH . 'src/utils/json_loader.php');
+// Charger automatiquement les outils de base pour toute l'admin
+require_once JSON_LOADER;

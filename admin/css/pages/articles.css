@@ -1,0 +1,98 @@
+/* Layout spécifique à l'éditeur d'articles */
+.admin-editor-container {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    gap: 20px;
+    align-items: start;
+}
+
+/* Sidebar des articles existants */
+.admin-sidebar {
+    background: var(--bg-white);
+    padding: 20px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-subtle);
+    position: sticky;
+    top: 20px;
+}
+
+.admin-sidebar h4 {
+    color: var(--text-dark);
+    margin-bottom: 15px;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 5px;
+}
+
+/* Onglets de langue */
+.lang-tabs-container {
+    display: flex;
+    gap: 5px;
+    margin-bottom: -1px; /* Pour coller au contenu */
+}
+
+.tab-btn {
+    padding: 10px 20px;
+    border: 1px solid #ddd;
+    border-bottom: none;
+    background: #eee;
+    cursor: pointer;
+    border-radius: 8px 8px 0 0;
+    transition: 0.3s;
+}
+
+.tab-btn.active {
+    background: var(--bg-white);
+    border-top: 3px solid var(--primary-color);
+    font-weight: bold;
+}
+
+/* Workspace des blocs */
+#blocks-workspace {
+    background: #fff;
+    border: 1px solid #ddd;
+    padding: 30px;
+    border-radius: 0 8px 8px 8px;
+    min-height: 400px;
+    margin-bottom: 20px;
+}
+
+/* Style d'un bloc individuel */
+.block-item {
+    position: relative;
+    border: 1px dashed var(--border-color);
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 6px;
+    background: var(--bg-extra-light);
+}
+
+.block-item:hover {
+    border-color: var(--primary-color);
+}
+
+/* Barre d'outils de l'article */
+.editor-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.main-title-input {
+    font-size: 1.5rem;
+    font-weight: bold;
+    border: none;
+    border-bottom: 2px solid var(--primary-color);
+    margin-bottom: 10px;
+    background: transparent;
+}
+
+.main-title-input:focus {
+    border-bottom-color: var(--primary-hover);
+    background: var(--bg-white);
+}
+
+.id-preview {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+}

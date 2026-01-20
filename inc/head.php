@@ -10,15 +10,15 @@
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/footer.css">
     <!-- Inclusion conditionnelle de la feuille de style spécifique à chaque page -->
-    <?php
-    if (isset($_GET['page'])) {
-        $page = htmlspecialchars($_GET['page']);
-        $cssFile = "css/pages/$page.css";
-        if (file_exists($cssFile)) {
-            echo '<link rel="stylesheet" href="' . $cssFile . '">';
+        <?php
+        if (isset($_GET['page'])) {
+            $page = htmlspecialchars($_GET['page']);
+            $cssFile = "css/pages/$page.css";
+            if (file_exists($cssFile)) {
+                echo '<link rel="stylesheet" href="' . $cssFile . '">';
+            }
         }
-    }
-    ?>
+        ?>
     <script src="js/modernizr-custom.js"></script>
     <script src="js/menu.js"></script>
     <link rel="shortcut icon" type="image/png" href="iconsite.png">

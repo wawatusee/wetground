@@ -21,8 +21,6 @@ const BlockTemplates = {
         ${generateLangInputs(id, 'textarea', 'Séparez les éléments par une virgule')}
     `)
 };
-console.log("Éditeur chargé ! Langues détectées :", SUPPORTED_LANGS);
-alert("JS Actif !"); // Si cette alerte n'apparaît pas, le fichier n'est pas trouvé.
 
 // --- Fonctions Utilitaires ---
 

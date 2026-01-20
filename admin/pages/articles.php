@@ -1,6 +1,6 @@
 <?php
 // On récupère la liste des articles existants pour le menu latéral ou la gestion
-$articlesDir = __DIR__ . '/../../json/articles/';
+$articlesDir = JSON_ARTICLES_DIR;
 $existingArticles = array_diff(scandir($articlesDir), array('..', '.'));
 ?>
 
@@ -18,7 +18,12 @@ $existingArticles = array_diff(scandir($articlesDir), array('..', '.'));
         <div class="editor-toolbar">
             <?php
             // Inclusion explicite selon vos règles 
-            require_once __DIR__ . '/../src/model/config_model.php';
+            if (defined('ADMIN_PATH')) {
+                require_once ADMIN_PATH . 'src/model/config_model.php';
+            } else {
+                // Fallback ou erreur explicite
+                die("Erreur système : ADMIN_PATH non définie.");
+            }
 
             // Utilisation du modèle pour récupérer les langues configurées
             $langs = ConfigModel::getLangs(); // Récupère { "fr": "Français", ... } [cite: 37]

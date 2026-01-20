@@ -1,11 +1,16 @@
-<?php class ArticleModel
+<?php
+// admin/src/model/article_model.php
+
+class ArticleModel
 {
     private array $data;
 
-    public function __construct(string $jsonPath)
+    /**
+     * Le constructeur reçoit maintenant directement le tableau de données
+     */
+    public function __construct(array $data)
     {
-        $json = file_get_contents($jsonPath);
-        $this->data = json_decode($json, true);
+        $this->data = $data;
     }
 
     public function getData(): array
