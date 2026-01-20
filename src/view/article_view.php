@@ -22,9 +22,9 @@
 
     public function render(): void
     {
-        echo '<h1>' . htmlspecialchars(
+        echo '<h2>' . htmlspecialchars(
             $this->translate($this->data['title'])
-        ) . '</h1>';
+        ) . '</h2>';
 
         foreach ($this->data['article'] as $block) {
             echo '<h2>' . htmlspecialchars($block['name']) . '</h2>';

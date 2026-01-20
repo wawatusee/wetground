@@ -1,4 +1,5 @@
 <?php
+// admin/index.php
 session_start();
 
 // --- sécurité admin simple ---

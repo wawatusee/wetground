@@ -3,15 +3,18 @@
   margin: 0;
   padding: 0;
 }
+
 section {
   /*max-width: 94vw;*/
   margin: auto;
 }
+
 /*Communs disposition values*/
 :root {
   --standartspace: 0.9em;
   --content-padding: 5px;
 }
+
 /*Communs Colors images*/
 :root {
   --main-dark-color: #18161b;
@@ -23,63 +26,75 @@ section {
   --grey-clear-color: #a8a9ad;
   --rs-bckgrnd-img: url("../img/deco/logo-rs_30px.png");
 }
+
 /*Fonts*/
 @font-face {
-    font-family: "myHomeFont";
-    src: url("./fonts/veteran typewriter.ttf");
-  }
+  font-family: "myHomeFont";
+  src: url("./fonts/veteran typewriter.ttf");
+}
+
 @font-face {
   font-family: "myFirstFont";
-    src: url("./fonts/Helroty-Regular.ttf");
+  src: url("./fonts/Helroty-Regular.ttf");
   /*src: url("./fonts/Hind-Regular.ttf");*/
 }
+
 /*Use this font with this line => font-family: myFirstFont;*/
 @font-face {
   font-family: "myTitleFont";
-    src: url("./fonts/veteran typewriter.ttf");
+  src: url("./fonts/veteran typewriter.ttf");
   /*src: url("./fonts/Montserrat-Thin.ttf");*/
   /*src: url("./fonts/Runestars-Regular.ttf");*/
 }
+
 /*Use this font with this line => font-family: myTitleFont;*/
 body {
   font-family: "myHomeFont";
 }
+
 h1 {
-font-size: 2em;
+  font-size: 2em;
   font-weight: lighter;
 }
+
 h2 {
-  
-/*font-family: "myFirstFont"; */
+
+  /*font-family: "myFirstFont"; */
   /*font-family: "myTitleFont";*/
   text-align: center;
 }
 
 h2 {
+  text-align: center;
   font-size: 2em;
   margin-bottom: 0.5em;
   margin-top: 0.5em;
-      font-weight: lighter;
+  font-weight: lighter;
 }
+
 h3 {
   font-size: 1.2em;
   font-weight: lighter;
 }
+
 a {
-    font-size: 1em;
+  font-size: 1em;
   font-weight: lighter;
 }
+
 p {
   margin: auto auto 5%;
   padding: var(--content-padding);
   max-width: 800px;
   text-align: justify;
 }
+
 :root {
   --standartspace: 0.9em;
   --content-padding: 20px;
 }
+
 /*Special emilie, elle ne veut pas de titre*/
-.invisible-titre{
+.invisible-titre {
   visibility: hidden;
 }
