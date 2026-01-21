@@ -19,21 +19,20 @@ $existingArticles = array_diff(scandir($articlesDir), array('..', '.'));
     </aside>
 
     <main class="admin-content">
-        <div class="editor-toolbar">
-            <?php
-            // Inclusion explicite selon vos règles 
-            if (defined('ADMIN_PATH')) {
-                require_once ADMIN_PATH . 'src/model/config_model.php';
-            } else {
-                // Fallback ou erreur explicite
-                die("Erreur système : ADMIN_PATH non définie.");
-            }
 
-            // Utilisation du modèle pour récupérer les langues configurées
-            $langs = ConfigModel::getLangs(); // Récupère { "fr": "Français", ... } [cite: 37]
-            $langKeys = array_keys($langs);
-            ?>
-
+        <?php
+        // Inclusion explicite selon vos règles 
+        if (defined('ADMIN_PATH')) {
+            require_once ADMIN_PATH . 'src/model/config_model.php';
+        } else {
+            // Fallback ou erreur explicite
+            die("Erreur système : ADMIN_PATH non définie.");
+        }
+        // Utilisation du modèle pour récupérer les langues configurées
+        $langs = ConfigModel::getLangs(); // Récupère { "fr": "Français", ... } [cite: 37]
+        $langKeys = array_keys($langs);
+        ?>
+        <div class="lang-tabs-wrapper">
             <nav class="lang-tabs-container" id="editor-langs" data-config='<?= json_encode($langKeys) ?>'>
                 <?php foreach ($langs as $code => $label): ?>
                     <button type="button" class="tab-btn <?= $code === 'fr' ? 'active' : '' ?>" data-lang="<?= $code ?>"
@@ -42,7 +41,6 @@ $existingArticles = array_diff(scandir($articlesDir), array('..', '.'));
                     </button>
                 <?php endforeach; ?>
             </nav>
-            <button id="save-article-btn" class="btn-save">Enregistrer l'Article</button>
         </div>
 
         <form id="article-builder">
@@ -53,14 +51,24 @@ $existingArticles = array_diff(scandir($articlesDir), array('..', '.'));
 
             <div id="blocks-workspace"></div>
 
-            <div class="add-block-control">
-                <select id="new-block-type">
-                    <option value="title">Titre (H2)</option>
-                    <option value="text">Texte / Paragraphe</option>
-                    <option value="list">Liste à puces</option>
-                    <option value="link">Lien / Bouton</option>
-                </select>
-                <button type="button" id="add-block-trigger">+ Ajouter</button>
+            <div class="editor-actions-bar">
+                <div class="add-block-controls">
+                    <select id="new-block-type">
+                        <option value="text">Paragraphe</option>
+                        <option value="title">Titre (H2)</option>
+                        <option value="list">Liste à puces</option>
+                        <option value="link">Lien / Bouton</option>
+                    </select>
+                    <button type="button" id="add-block-trigger" class="btn-secondary">
+                        + Ajouter un bloc
+                    </button>
+                </div>
+
+                <div class="save-controls">
+                    <button type="button" id="save-article-btn" class="btn-save">
+                        Enregistrer l'Article
+                    </button>
+                </div>
             </div>
         </form>
     </main>

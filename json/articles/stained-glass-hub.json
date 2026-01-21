@@ -2,7 +2,7 @@
     "type": "article",
     "meta": {
         "id": "stained-glass-hub",
-        "created": "2026-01-21",
+        "created": "2026-01-20",
         "updated": "2026-01-21"
     },
     "content": [
@@ -10,7 +10,7 @@
             "type": "title",
             "level": 2,
             "text": {
-                "fr": "Atelier vitraux partagééééé",
+                "fr": "Atelier vitraux partagés",
                 "en": "Shared stained-glass studio",
                 "nl": "Gedeeld glas-in-lood atelier"
             }
@@ -29,6 +29,15 @@
                 "fr": "À partir de 2026, vous pourrez réserver votre espace directement depuis le calendrier de réservation.",
                 "en": "Starting in 2026, you will be able to reserve your space directly through the booking calendar.",
                 "nl": "Vanaf 2026 kunt u uw plek reserveren via de reserveringskalender."
+            }
+        },
+        {
+            "type": "link",
+            "url": "calendar.com",
+            "content": {
+                "fr": "calendrier",
+                "en": "calendar",
+                "nl": "schuddle"
             }
         }
     ]

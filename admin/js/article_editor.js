@@ -20,7 +20,20 @@ const BlockTemplates = {
     `),
     list: (id, data = null) => createBlockWrapper(id, 'list', 'Liste à puces', `
         ${generateLangInputs(id, 'textarea', 'Séparez les éléments par une virgule', data)}
-    `)
+    `),
+    link: (id, data = null) => {
+        // On récupère l'URL (soit depuis data.url, soit vide)
+        const urlValue = (data && data.url) ? data.url : '';
+
+        return createBlockWrapper(id, 'link', 'Lien / Bouton', `
+        <div class="url-field-container" style="margin-bottom: 10px;">
+            <label style="font-size: 0.8rem; font-weight: bold; color: var(--text-muted);">URL :</label>
+            <input type="text" class="block-url" placeholder="https://..." value="${urlValue}">
+        </div>
+        <label style="font-size: 0.8rem; font-weight: bold; color: var(--text-muted);">Texte du lien :</label>
+        ${generateLangInputs(id, 'input', '', data)} 
+    `);
+    }
 };
 
 // --- Fonctions Utilitaires ---
@@ -145,6 +158,11 @@ async function saveArticle() {
         const type = block.dataset.type;
         const blockObj = { type: type };
 
+        if (type === 'link') {
+            const urlInput = block.querySelector('.block-url');
+            blockObj.url = urlInput ? urlInput.value : '#'; // URL par défaut si vide
+        }
+
         // Gestion du niveau pour les titres
         if (type === 'title') {
             const levelInput = block.querySelector('.block-level');
@@ -159,7 +177,13 @@ async function saveArticle() {
         SUPPORTED_LANGS.forEach(lang => {
             const field = block.querySelector(`.data-${lang}`);
             if (field) {
-                blockObj[dataKey][lang] = field.value;
+                let value = field.value;
+                // Si c'est une liste, on transforme la chaîne "pomme, poire" en ["pomme", "poire"]
+                if (type === 'list') {
+                    blockObj[dataKey][lang] = value.split(',').map(item => item.trim()).filter(item => item !== "");
+                } else {
+                    blockObj[dataKey][lang] = value;
+                }
             }
         });
 
