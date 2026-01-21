@@ -7,6 +7,7 @@
 const configEl = document.getElementById('editor-langs');
 const SUPPORTED_LANGS = JSON.parse(configEl.dataset.config); // ["fr", "en", "nl"]
 let activeLang = 'fr';
+let originalCreationDate = null;
 
 // --- Gestion des Blocs (Templates) ---
 const BlockTemplates = {
@@ -73,6 +74,8 @@ async function loadArticle(filename) {
         if (!response.ok) throw new Error('Erreur réseau');
 
         const data = await response.json();
+        // On mémorise la date de création pour ne pas la perdre à la sauvegarde
+        originalCreationDate = data.meta.created || null;
 
         // 1. On vide l'éditeur actuel
         const workspace = document.getElementById('blocks-workspace');
@@ -130,7 +133,8 @@ async function saveArticle() {
         type: "article",
         meta: {
             id: articleId,
-            updated: new Date().toISOString().split('T')[0]
+            created: originalCreationDate || new Date().toISOString().split('T')[0],
+            updated: new Date().toISOString().split('T')[0] // Date du jour forcée
         },
         content: []
     };
@@ -174,7 +178,7 @@ async function saveArticle() {
         if (result.success) {
             alert("Article enregistré avec succès !");
             // Optionnel : recharger la sidebar si c'est un nouvel article
-            location.reload(); 
+            location.reload();
         } else {
             throw new Error(result.error);
         }

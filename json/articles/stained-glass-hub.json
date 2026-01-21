@@ -2,14 +2,15 @@
     "type": "article",
     "meta": {
         "id": "stained-glass-hub",
-        "updated": "2026-01-20"
+        "created": "2026-01-21",
+        "updated": "2026-01-21"
     },
     "content": [
         {
             "type": "title",
             "level": 2,
             "text": {
-                "fr": "Atelier vitraux partagé",
+                "fr": "Atelier vitraux partagééééé",
                 "en": "Shared stained-glass studio",
                 "nl": "Gedeeld glas-in-lood atelier"
             }
