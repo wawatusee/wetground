@@ -121,6 +121,68 @@ function addTextBlock(container, data = null) {
         container.appendChild(div);
     });
 }
+async function saveArticle() {
+    const articleId = document.getElementById('article-title').value;
+    if (!articleId) return alert("L'article doit avoir un ID (titre principal).");
+
+    // 1. Préparation de la structure de base
+    const articleData = {
+        type: "article",
+        meta: {
+            id: articleId,
+            updated: new Date().toISOString().split('T')[0]
+        },
+        content: []
+    };
+
+    // 2. Extraction des blocs
+    const blocks = document.querySelectorAll('.block-item');
+    blocks.forEach(block => {
+        const type = block.dataset.type;
+        const blockObj = { type: type };
+
+        // Gestion du niveau pour les titres
+        if (type === 'title') {
+            const levelInput = block.querySelector('.block-level');
+            blockObj.level = levelInput ? parseInt(levelInput.value) : 2;
+        }
+
+        // Extraction des données multilingues
+        // On détermine si c'est 'text' (pour les titres) ou 'content' (pour les paragraphes/listes)
+        const dataKey = (type === 'title') ? 'text' : 'content';
+        blockObj[dataKey] = {};
+
+        SUPPORTED_LANGS.forEach(lang => {
+            const field = block.querySelector(`.data-${lang}`);
+            if (field) {
+                blockObj[dataKey][lang] = field.value;
+            }
+        });
+
+        articleData.content.push(blockObj);
+    });
+
+    // 3. Envoi au serveur
+    try {
+        const response = await fetch('api/save_article.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(articleData)
+        });
+
+        const result = await response.json();
+        if (result.success) {
+            alert("Article enregistré avec succès !");
+            // Optionnel : recharger la sidebar si c'est un nouvel article
+            location.reload(); 
+        } else {
+            throw new Error(result.error);
+        }
+    } catch (error) {
+        console.error("Erreur sauvegarde:", error);
+        alert("Erreur lors de l'enregistrement.");
+    }
+}
 
 // --- Événements et Logique ---
 
@@ -167,3 +229,4 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+document.getElementById('save-article-btn').addEventListener('click', saveArticle);
