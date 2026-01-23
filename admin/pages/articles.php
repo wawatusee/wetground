@@ -7,12 +7,25 @@ $existingArticles = array_diff(scandir($articlesDir), array('..', '.'));
 <div class="admin-editor-container">
     <aside class="admin-sidebar">
         <h4>Articles existants</h4>
+        <div class="sidebar-actions" style="margin-bottom: 20px;">
+            <button type="button" id="new-article-btn" class="btn-primary" style="width: 100%;">
+                + Nouvel Article
+            </button>
+        </div>
         <ul>
             <?php foreach ($existingArticles as $file): ?>
-                <li>
-                    <a href="#" class="load-article-link" data-filename="<?= $file ?>">
-                        <?= basename($file, '.json') ?>
-                    </a>
+                <li class="sidebar-item">
+                    <div class="item-main">
+                        <a href="#" class="load-article-link" data-filename="<?= $file ?>">
+                            <?= str_replace('.json', '', $file) ?>
+                        </a>
+                    </div>
+                    <div class="item-actions">
+                        <button type="button" class="btn-delete-file" data-filename="<?= $file ?>"
+                            title="Supprimer définitivement">
+                            🗑️
+                        </button>
+                    </div>
                 </li>
             <?php endforeach; ?>
         </ul>

@@ -30,15 +30,6 @@
                 "en": "Starting in 2026, you will be able to reserve your space directly through the booking calendar.",
                 "nl": "Vanaf 2026 kunt u uw plek reserveren via de reserveringskalender."
             }
-        },
-        {
-            "type": "link",
-            "url": "calendar.com",
-            "content": {
-                "fr": "calendrier",
-                "en": "calendar",
-                "nl": "schuddle"
-            }
         }
     ]
 }
