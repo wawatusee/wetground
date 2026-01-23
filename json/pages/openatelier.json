@@ -1,15 +1,10 @@
 {
-    "title": {
-        "fr": "openatelier.json",
-        "en": "openatelier.json"
-    },
-    "blocks": [
+    "title": "openatelier",
+    "filename": "openatelier.json",
+    "layout": [
         {
-            "type": "text",
-            "content": {
-                "fr": "",
-                "en": ""
-            }
+            "type": "article_ref",
+            "filename": "stained-glass-hub.json"
         }
     ]
 }

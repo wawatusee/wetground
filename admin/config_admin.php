@@ -10,7 +10,8 @@ define('ADMIN_PAGES', [
     'dashboard',
     'pages',
     'articles',
-    'galleries'
+    'galleries',
+    'contacts'
 ]);
 
 // Dossiers JSON des contenus (Utilisation de ROOT_PATH pour la clarté)
