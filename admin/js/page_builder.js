@@ -43,6 +43,27 @@ const PageBlockTemplates = {
                         </select>
                     </div>
                 </div>`;
+    },
+    contact_ref: (id, data = {}) => {
+        const selected = data.filename || '';
+        // On utilise window.availableContacts chargé via l'API
+        const options = (window.availableContacts || [])
+            .map(file => `<option value="${file}" ${selected === file ? 'selected' : ''}>${file}</option>`)
+            .join('');
+
+        return `
+            <div class="block-item" data-id="${id}" data-type="contact_ref">
+                <div class="block-header">
+                    <strong>👤 Référence Contact</strong>
+                    <button class="btn-delete-block" onclick="this.closest('.block-item').remove()">×</button>
+                </div>
+                <div class="block-body">
+                    <select class="data-filename">
+                        <option value="">-- Sélectionner une fiche contact --</option>
+                        ${options}
+                    </select>
+                </div>
+            </div>`;
     }
 };
 async function loadPageLayout(filename) {
@@ -93,6 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const pageTitleInput = document.getElementById('page-title');
     const generatedFilename = document.getElementById('generated-filename');
 
+
     if (pageTitleInput && generatedFilename) {
         pageTitleInput.addEventListener('input', () => {
             const slug = pageTitleInput.value
@@ -105,8 +127,6 @@ document.addEventListener('DOMContentLoaded', () => {
             generatedFilename.textContent = slug ? slug + '.json' : 'nouveau.json';
         });
     }
-
-
 
     // 2. Récupérer TOUTES les ressources nécessaires
     Promise.all([
