@@ -14,10 +14,7 @@
                 <li> <a class="contacts-instagram"
                 href="https://www.instagram.com/wetground_expo?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==">Instagram</a>
         </li>
-                </li>
-                <li> <a class="contacts-facebook"
-                href="https://www.instagram.com/wetground_expo?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==">Instagram</a>
-        </li>
+                
     </ul>
     <div class="portrait-contact">
         <img src=<?=$repDeco.'image-contact.jpg'?> alt="illustration contact">
