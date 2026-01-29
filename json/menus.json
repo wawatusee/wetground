@@ -1,48 +1,46 @@
 {
   "Main_menu": [
     {
-      "page": "lead&tiffany",
+      "page": "openatelier",
       "titre": {
-        "fr": "lead & tiffany",
-        "nl":"",
-        "en":""
-      }
-    },
-    {
-      "page": "pictureonglass",
-      "titre": {
-        "fr": "picture on glass"
-      }
-    },
-    {
-      "page": "personalisedprojects",
-      "titre": {
-        "fr": "personalised projects"
+        "fr": "open atelier",
+        "en": "open studio",
+        "nl": "open atelier"
       }
     },
     {
       "page": "workshops",
       "titre": {
-        "fr": "workshops"
+        "fr": "ateliers",
+        "en": "workshops",
+        "nl": "workshops"
       }
     },
     {
-      "page": "openatelier",
+      "page": "catalog",
       "titre": {
-        "fr": "open atelier"
+        "fr": "catalogue",
+        "en": "catalog",
+        "nl": "catalogus"
       }
     },
     {
       "page": "contact",
       "titre": {
-        "fr": "contact"
+        "fr": "contact",
+        "en": "contact",
+        "nl": "contact"
       }
     }
   ],
   "RS_menu": [
     {
       "page": "https://www.instagram.com/anne_b._sollis?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==/",
-      "titre": "instagram"
+      "titre": {
+        "fr": "instagram",
+        "en": "instagram",
+        "nl": "instagram"
+      }
     }
   ]
 }

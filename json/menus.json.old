@@ -1,0 +1,36 @@
+{
+  "Main_menu": [
+    {
+      "page": "openatelier",
+      "titre": {
+        "fr": "open atelier"
+      }
+    },
+    {
+      "page": "workshops",
+      "titre": {
+        "fr": "workshops"
+      }
+    },
+    {
+      "page": "catalog",
+      "titre": {
+        "fr": "catalogue",
+        "nl": "",
+        "en": "catalog"
+      }
+    },
+    {
+      "page": "contact",
+      "titre": {
+        "fr": "contact"
+      }
+    }
+  ],
+  "RS_menu": [
+    {
+      "page": "https://www.instagram.com/anne_b._sollis?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==/",
+      "titre": "instagram"
+    }
+  ]
+}

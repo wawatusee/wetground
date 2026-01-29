@@ -1,0 +1,27 @@
+{
+    "type": "article",
+    "meta": {
+        "id": "workshop",
+        "created": "2026-01-23",
+        "updated": "2026-01-23"
+    },
+    "content": [
+        {
+            "type": "title",
+            "level": 2,
+            "text": {
+                "fr": "Organisation",
+                "en": "Organisation",
+                "nl": "Organization"
+            }
+        },
+        {
+            "type": "text",
+            "content": {
+                "fr": "Selon les besoins des habitués de l'atelier, et selon les disponibilités du maitre, des workshops seront organisé et annoncés sur cette page.",
+                "en": "",
+                "nl": ""
+            }
+        }
+    ]
+}

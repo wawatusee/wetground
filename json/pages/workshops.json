@@ -1,0 +1,10 @@
+{
+    "title": "workshops",
+    "filename": "workshops.json",
+    "layout": [
+        {
+            "type": "article_ref",
+            "filename": "workshop.json"
+        }
+    ]
+}

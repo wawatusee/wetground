@@ -1,13 +1,55 @@
-<!-- <h2 class="invisible-titre">workshops</h2> -->
-<p>
-Learn the basic skills for cutting, grinding and soldering glass. All materials are included. Go home with your self made piece!
-</p>
-<div class="contacts-container">
-    <div class="portrait-contact">
-        <img  src="<?=$repDeco?>portrait-anne.gif" alt="Portrait de l'artiste">
-    </div>
-    <ul class="contacts">
-        <li> <a class=" contacts-maillink" href="mailto:contact@wawatusee.com">contact[at]wawatusee.com</a>
-        </li>
-    </ul>
-</div>
+<?php
+// 1. Dépendances
+require_once '../src/utils/json_loader.php';
+require_once '../src/model/article_model.php';
+require_once '../src/view/article_view.php';
+
+$lang = $_GET['lang'] ?? 'fr';
+
+// 2. On charge le "PLAN DE MONTAGE" (le layout)
+$layoutPath = '../json/pages/workshops.json';
+
+try {
+    $pageStructure = JsonLoader::load($layoutPath);
+    $blocks = $pageStructure['layout'] ?? [];
+} catch (Exception $e) {
+    $blocks = [];
+}
+?>
+
+<section class="core">
+    <?php 
+    // 3. On boucle sur chaque bloc défini dans l'admin
+    foreach ($blocks as $block): 
+        
+        // SI c'est une référence à un article
+        if ($block['type'] === 'article_ref'):
+            $articleFile = '../json/articles/' . $block['filename'];
+            
+            try {
+                if (file_exists($articleFile)) {
+                    $data  = JsonLoader::load($articleFile);
+                    $model = new ArticleModel($data);
+                    $view  = new ArticleView($model->getData(), $lang);
+                    
+                    // Rendu immédiat du bloc
+                    $view->render();
+                }
+            } catch (Exception $e) {
+                echo "";
+            }
+
+        // SI c'est un composant spécial (Hero, Formulaire, etc.)
+        elseif ($block['type'] === 'ui_component'):
+            // Ici, on pourra inclure des fichiers de vue spécifiques plus tard
+            // include '../src/view/components/' . $block['name'] . '.php';
+            echo "<div class='ui-comp'>Composant : " . $block['name'] . "</div>";
+        endif;
+
+    endforeach; 
+
+    // Message si la page est vide
+    if (empty($blocks)): ?>
+        <p>Cette page n'a pas encore de contenu.</p>
+    <?php endif; ?>
+</section>

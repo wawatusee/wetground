@@ -1,0 +1,14 @@
+{
+    "title": "openatelier",
+    "filename": "openatelier.json",
+    "layout": [
+        {
+            "type": "article_ref",
+            "filename": "stained-glass-hub.json"
+        },
+        {
+            "type": "article_ref",
+            "filename": "workshop.json"
+        }
+    ]
+}

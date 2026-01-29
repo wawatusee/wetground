@@ -1,11 +1,13 @@
 {
-    "config":{
-        "singlePage":0,
-        "langs":[
-            {
-                "fr" : "Français"
-                }
-            ],
-            "titleWebSite":["vue","sur","verre"]
-    }
+  "config": {
+    "singlePage": 0,
+
+    "langs": {
+      "fr": "Français",
+      "en": "English",
+      "nl": "Nederlands"
+    },
+
+    "titleWebSite": ["Wetground.be"]
+  }
 }

@@ -1,0 +1,21 @@
+{
+    "name": "wetground",
+    "phone": "0032488191471",
+    "email": "info@wetground.be",
+    "role_fr": "info",
+    "role_en": "info",
+    "socials": [
+        {
+            "platform": "whatsapp",
+            "value": "https:\/\/wa.me\/32488191471"
+        },
+        {
+            "platform": "instagram",
+            "value": "https:\/\/www.instagram.com\/vue_sur_verre?igsh=MXYybm51Y3UyZGlyNg%3D%3D&utm_source=qr"
+        },
+        {
+            "platform": "facebook",
+            "value": "https:\/\/www.facebook.com\/vue.sur.verre\/"
+        }
+    ]
+}
