@@ -1,112 +1,145 @@
 /*Footer*/
-footer{
-    color:whitesmoke;
-    position: fixed;
-                bottom: 0;
-            width: 100%;
+footer {
+  color: var(--main-clear-color);
+  background-color: var(--main-dark-color);
+}
 
-  }
-  footer{
-    font-family: "myHomeFont",Times, Times New Roman, serif;
+footer>h2 {
+  color: var(--main-dark-color);
+  font-family: "myTitleFont";
+}
 
-  }
-  footer>h2{
-    color: var(--main-dark-color);
-    font-family:"myTitleFont";
-  }
 /*footerNav*/
-#sitemap{
-padding:15px;
+#sitemap {
+  margin-bottom: 5px;
+
 }
 
-#sitemap h3{
-color: white;
-font-family: "myTitleFont";
+
+.footerNav {
+  margin-left: var(--content-padding);
+  max-width: 92%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  margin-top: 15px;
+  padding-top: 15px;
+  gap: 30px;
 }
 
-.footerNav{
-background-color: whitesmoke;
-display: flex;
-flex-direction: row;
-justify-content: space-around;
-flex-wrap: wrap;
-/*margin-top: 10px;
-padding-top: 10px;*/
-}
-.navfooterbloc{
-margin: var(--standartspace);
-}
-.navfooterbloc a{
-display: inline-flex;
-text-decoration: none;
-color: var(--main-dark-color);
+.navfooterbloc {
+  margin-bottom: var(--standartspace);
+  line-height: 1.8em
 }
 
-/**/
-
-.navfooterbloc a:hover{
-text-decoration: underline;
-color: var(--secondary-blue-color);
+.navfooterbloc a {
+  display: block;
+  text-decoration: none;
+  color: var(--main-clear-color);
+    padding-left: 10px;
+  padding-right: 10px;
 }
+
+.navfooterbloc a:hover {
+  color: var(--secondary-blue-color);
+  text-decoration-line: underline;
+}
+
+
+
 /*Particular communications link*/
-.maillink::before{
-  content:url('/public/img/deco/icons8-mail-24.png');
+address {
+  font-style: normal;
+}
+
+.maillink::before {
+  content: url('/public/img/deco/icons8-mail-24.png');
   position: relative;
   top: 10px;
   left: -10px;
 }
-.phonelink::before{
-  content:url('/public/img/deco/phone-filled-white.png');
+
+.phonelink::before {
+  content: url('/public/img/deco/phone-filled-white.png');
   position: relative;
   top: 10px;
   left: -10px;
   bottom: 0;
 }
-.whatsapplink::before{
-  content:url('/public/img/deco/icons8-whatsapp-24.png');
+
+.situationlink::content {
+  content: url('/public/img/deco/icons8-map-32.png');
   position: relative;
   top: 10px;
   left: -10px;
 }
-.instagramlink::before{
-   content:url('/public/img/deco/square-instagram-brands-solid-full.svg');
+
+.situationlink::before {
+  content: url('/public/img/deco/icons8-map-32.png');
   position: relative;
   top: 10px;
   left: -10px;
 }
+
+/* Styles spécifiques pour les écrans de moins de 600px de large (portables) */
+@media (max-width: 600px) {
+
+  .maillink::before,
+  .phonelink::before,
+  .situationlink::before {
+    content: none;
+    /* Fait disparaître le contenu des pseudo-éléments ::before */
+  }
+}
+
 /*Block  rsMenu*/
-.nav-rs{
-    display: flex;
-    justify-content:center;
-    background-color: var(--main-dark-color);
-  }
-  .nav-rs a{
-    display: inline-block;
-  }
-  .rs{
+.nav-rs {
+  display: flex;
+  justify-content: center;
+  background-color: var(--batho-noir);
+}
+
+.nav-rs a {
+  display: inline-block;
+}
+
+.rs {
   height: 30px;
   width: 30px;
   background-image: url("../img/deco/logo-rs_30px.png");
-  background-position-y:0;
+  background-position-y: 0;
   margin: var(--standartspace);
-  }
-  .rs:hover{
-    background-position-y:-30px;
-    }
-  .facebook{
-  background-position-x:0;
-  }
-  .instagram{
-  background-position-x:-30px;
-  }
-  .youtube{
-    background-position-x:-90px;
-    }
-  .flickr{
-  background-position-x:-150px;
-  }
-  /*End RSmenu*/
+}
 
+.rs:hover {
+  background-position-y: -30px;
+}
 
-      /* end footerNav*/
-  /**********************/
+.facebook {
+  background-position-x: 0;
+}
+
+.instagram {
+  background-position-x: -30px;
+}
+
+.youtube {
+  background-position-x: -90px;
+}
+
+.flickr {
+  background-position-x: -150px;
+}
+
+/*End RSmenu*/
+
+/* end footerNav*/
+/**********************/
+/*Fin footer Logo*/
+.footer-logo {
+  width: 180px;
+  display: block;
+  margin: auto;
+  padding: 45px;
+}

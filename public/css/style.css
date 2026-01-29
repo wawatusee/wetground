@@ -93,8 +93,17 @@ p {
   --standartspace: 0.9em;
   --content-padding: 20px;
 }
+html, body {
+  height: 100%;
+  margin: 0;
+}
 
-/*Special emilie, elle ne veut pas de titre*/
-.invisible-titre {
-  visibility: hidden;
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1;
 }
