@@ -37,7 +37,8 @@ footer>h2 {
   display: block;
   text-decoration: none;
   color: var(--main-clear-color);
-    padding-left: 10px;
+  font-size: 1.2em;
+  padding-left: 10px;
   padding-right: 10px;
 }
 
