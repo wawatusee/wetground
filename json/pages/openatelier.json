@@ -9,6 +9,10 @@
         {
             "type": "article_ref",
             "filename": "Workstation booking.json"
+        },
+        {
+            "type": "gallery_ref",
+            "folder": "WORKSHOP"
         }
     ]
 }
