@@ -1,21 +1,25 @@
 {
-    "name": "wetground",
-    "phone": "0032488191471",
+    "name": "Wetground",
+    "phone": "+32(0)486.10.05.73",
     "email": "info@wetground.be",
-    "role_fr": "info",
-    "role_en": "info",
+    "map_url": "https:\/\/osm.org\/go\/0EoTm3Isy",
+    "role": {
+        "fr": "Atelier de vitraux",
+        "en": "Glass maker Atelier"
+    },
+    "address": {
+        "fr": "rue de la Constitution, 13. 1030 Schaerbeek - Belgium",
+        "en": "13 Constitution street.1030 Schaerbeek - Belgium",
+        "nl":"Wet ground strasse. 1030 Schaerbeek"
+    },
     "socials": [
         {
             "platform": "whatsapp",
-            "value": "https:\/\/wa.me\/32488191471"
+            "value": "32488191471"
         },
         {
             "platform": "instagram",
-            "value": "https:\/\/www.instagram.com\/vue_sur_verre?igsh=MXYybm51Y3UyZGlyNg%3D%3D&utm_source=qr"
-        },
-        {
-            "platform": "facebook",
-            "value": "https:\/\/www.facebook.com\/vue.sur.verre\/"
+            "value": "wetground_expo"
         }
     ]
 }

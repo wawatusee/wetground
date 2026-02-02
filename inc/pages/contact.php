@@ -22,7 +22,25 @@
         </li>
 
     </ul>
+<?php 
+//TEST contact
 
+require_once '../src/model/contact_model.php';
+require_once '../src/view/contact_view.php';
+
+// 1. On charge le fichier JSON que tu viens de créer via l'admin
+$jsonPath = '../json/contacts/wetground.json'; 
+$jsonRaw = file_get_contents($jsonPath);
+$data = json_decode($jsonRaw, true);
+
+// 2. Initialisation du Model et de la View
+$contactModel = new ContactModel($data);
+$contactView = new ContactView($contactModel, $lang);
+
+// 3. Affichage
+echo $contactView->render();
+
+?>
 
     <div class="map-wrapper">
         <iframe

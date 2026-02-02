@@ -32,11 +32,28 @@
                 </div>
             </div>
         </div>
+        <div class="editor-section">
+            <h3><i class="fas fa-map-marker-alt"></i> Localisation</h3>
+            <div class="grid-2-col">
+                <div class="input-group">
+                    <label>Adresse (FR)</label>
+                    <textarea id="contact-address-fr" rows="3" placeholder="Rue de la Constitution, 13..."></textarea>
+                </div>
+                <div class="input-group">
+                    <label>Address (EN)</label>
+                    <textarea id="contact-address-en" rows="3" placeholder="13 Constitution Street..."></textarea>
+                </div>
+            </div>
+            <div class="input-group">
+                <label>Lien OpenStreetMap (URL court osm.org)</label>
+                <input type="text" id="contact-map-url" placeholder="https://osm.org/go/...">
+            </div>
+        </div>
 
         <div class="editor-section">
             <h3><i class="fas fa-share-alt"></i> Réseaux Sociaux & Liens</h3>
             <div id="social-links-container">
-                </div>
+            </div>
             <button type="button" id="btn-add-social" class="btn-secondary">
                 <i class="fas fa-plus"></i> Ajouter un réseau social
             </button>
@@ -69,6 +86,7 @@
         <input type="text" class="social-value" placeholder="Identifiant ou lien complet">
         <button class="btn-remove-row" onclick="this.parentElement.remove()">×</button>
     </div>
+
 </template>
 
 <script src="js/contact_editor.js"></script>

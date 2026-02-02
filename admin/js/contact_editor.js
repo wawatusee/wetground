@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .replace(/[^\w\s-]/g, '')
             .replace(/[\s_-]+/g, '-')
             .replace(/^-+|-+$/g, '');
-        
+
         filenamePreview.textContent = slug ? slug + '.json' : 'nouveau.json';
     });
 
@@ -43,12 +43,20 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // Objet final
+
         const contactData = {
-            name: contactNameInput.value.trim(),
-            phone: document.getElementById('contact-phone').value.trim(),
-            email: document.getElementById('contact-email').value.trim(),
-            role_fr: document.getElementById('contact-role-fr').value.trim(),
-            role_en: document.getElementById('contact-role-en').value.trim(),
+            name: document.getElementById('contact-name').value,
+            phone: document.getElementById('contact-phone').value,
+            email: document.getElementById('contact-email').value,
+            map_url: document.getElementById('contact-map-url').value,
+            role: {
+                fr: document.getElementById('contact-role-fr').value,
+                en: document.getElementById('contact-role-en').value
+            },
+            address: {
+                fr: document.getElementById('contact-address-fr').value,
+                en: document.getElementById('contact-address-en').value
+            },
             socials: socials
         };
 
@@ -82,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const response = await fetch('api/get_contacts_list.php');
             const files = await response.json();
-            
+
             listElement.innerHTML = '';
             files.forEach(file => {
                 const li = document.createElement('li');
@@ -94,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
             listElement.innerHTML = '<li>Erreur de chargement</li>';
         }
     }
-// 5. Charger les données d'un contact existant pour modification
+    // 5. Charger les données d'un contact existant pour modification
     async function loadContact(filename) {
         try {
             const response = await fetch(`../json/contacts/${filename}`);
@@ -115,11 +123,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     // On réutilise la logique de clonage du template
                     const template = document.getElementById('social-row-template');
                     const clone = document.importNode(template.content, true);
-                    
+
                     // On pré-remplit les valeurs
                     clone.querySelector('.social-platform').value = social.platform;
                     clone.querySelector('.social-value').value = social.value;
-                    
+
                     socialContainer.appendChild(clone);
                 });
             }
