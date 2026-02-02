@@ -8,7 +8,11 @@
         },
         {
             "type": "article_ref",
-            "filename": "workshop.json"
+            "filename": "Workstation booking.json"
+        },
+        {
+            "type": "gallery_ref",
+            "folder": "WORKSHOP"
         }
     ]
 }

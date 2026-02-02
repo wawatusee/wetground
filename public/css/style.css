@@ -14,6 +14,20 @@ section {
   --standartspace: 0.9em;
   --content-padding: 5px;
 }
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1;
+}
 
 /*Communs Colors images*/
 :root {
@@ -83,7 +97,7 @@ a {
 }
 
 p {
-  margin: auto auto 5%;
+  margin: auto auto;
   padding: var(--content-padding);
   max-width: 800px;
   text-align: justify;
@@ -91,10 +105,5 @@ p {
 
 :root {
   --standartspace: 0.9em;
-  --content-padding: 20px;
-}
-
-/*Special emilie, elle ne veut pas de titre*/
-.invisible-titre {
-  visibility: hidden;
+  --content-padding:0.5em;
 }

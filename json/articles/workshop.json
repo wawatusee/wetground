@@ -3,7 +3,7 @@
     "meta": {
         "id": "workshop",
         "created": "2026-01-23",
-        "updated": "2026-01-23"
+        "updated": "2026-02-02"
     },
     "content": [
         {
@@ -18,9 +18,17 @@
         {
             "type": "text",
             "content": {
-                "fr": "Selon les besoins des habitués de l'atelier, et selon les disponibilités du maitre, des workshops seront organisé et annoncés sur cette page.",
-                "en": "",
-                "nl": ""
+                "fr": "Selon les besoins des habitués de l'atelier, et selon les disponibilités du maitre des lieux, des workshops seront organisé et annoncés sur cette page.",
+                "en": "According to the needs of the regular users of the workshop, and depending on the availability of the master of the premises, workshops will be organised and announced on this page.",
+                "nl": "Naargelang de behoeften van de vaste gebruikers van het atelier en afhankelijk van de beschikbaarheid van de meester van de werkplaats, zullen workshops worden georganiseerd en op deze pagina worden aangekondigd."
+            }
+        },
+        {
+            "type": "text",
+            "content": {
+                "fr": "L’espace et le matériel de Wet Ground seront mis à disposition.\nLe maître des lieux accompagnera les participants dans l’apprentissage de nouvelles techniques.",
+                "en": "The Wet Ground space and equipment will be made available.\nThe master of the premises will guide participants in learning new techniques.",
+                "nl": "De ruimte en het materiaal van Wet Ground worden ter beschikking gesteld.\nDe meester van de werkplaats zal de deelnemers begeleiden bij het aanleren van nieuwe technieken."
             }
         }
     ]

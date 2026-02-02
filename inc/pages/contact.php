@@ -2,24 +2,27 @@
 
 <div class="contacts-container">
 
-    <ul class="contacts">
-        <li> <a class=" contacts-maillink" href="mailto:info@wetground.be">info[at]wetground.be</a>
-        </li>
+    <?php
+    require_once '../src/model/contact_model.php';
+    require_once '../src/view/contact_view.php';
 
-        <li> <a class="contacts-phonelink" href="tel:+32486100573">Tel : +32486100573</a>
-        </li>
-        <li> <a class="contacts-whatsapplink" aria-label="Chat on WhatsApp"
-                href="https://wa.me/+32486100573">Whatsapp</a>
-        </li>
-                <li> <a class="contacts-instagram"
-                href="https://www.instagram.com/wetground_expo?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==">Instagram</a>
-        </li>
-                </li>
-                <li> <a class="contacts-facebook"
-                href="https://www.instagram.com/wetground_expo?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==">Instagram</a>
-        </li>
-    </ul>
-    <div class="portrait-contact">
-        <img src=<?=$repDeco.'image-contact.jpg'?> alt="illustration contact">
+    // 1. On charge le fichier JSON que tu viens de créer via l'admin
+    $jsonPath = '../json/contacts/wetground.json';
+    $jsonRaw = file_get_contents($jsonPath);
+    $data = json_decode($jsonRaw, true);
+
+    // 2. Initialisation du Model et de la View
+    $contactModel = new ContactModel($data);
+    $contactView = new ContactView($contactModel, $lang);
+
+    // 3. Affichage
+    echo $contactView->render();
+
+    ?>
+
+    <div class="map-wrapper">
+        <iframe
+            src="https://www.openstreetmap.org/export/embed.html?bbox=4.3652%2C50.8594%2C4.3732%2C50.8634&layer=mapnik&marker=50.86147450297319%2C4.3692008228386445"
+            loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
     </div>
 </div>
