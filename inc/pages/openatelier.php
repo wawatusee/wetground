@@ -1,32 +1,32 @@
 <?php
-// 1. Chargement des outils et dépendances
-require_once '../src/utils/json_loader.php';
-require_once '../src/model/article_model.php';
-require_once '../src/view/article_view.php';
+// 1. Charger le Layout de la page
+$layoutRaw = file_get_contents('../json/pages/openatelier.json');
+$layoutData = json_decode($layoutRaw, true);
 
-// Configuration globale pour la page
-$lang = $_GET['lang'] ?? 'fr';
+foreach ($layoutData['layout'] as $component) {
+    if ($component['type'] === 'article_ref') {
+        
+        // 2. Aller chercher l'article pointé
+        $articlePath = '../json/articles/' . $component['filename'];
+        
+        if (file_exists($articlePath)) {
+            $articleData = json_decode(file_get_contents($articlePath), true);
+            
+            // 3. Utiliser un Renderer ou inclure une vue pour l'article
+            renderArticle($articleData, $lang);
+        }
+    }
+}
 
-// --- Bloc : Hub (Atelier partagé) ---
-$hubPath = '../json/articles/stained-glass-hub.json';
-
-try {
-    // On extrait, on modélise et on prépare la vue avec le préfixe 'hub'
-    $hubData  = JsonLoader::load($hubPath);
-    $hubModel = new ArticleModel($hubData);
-    $hubView  = new ArticleView($hubModel->getData(), $lang);
-} catch (Exception $e) {
-    // On peut logger l'erreur et décider de ne pas afficher ce bloc précis
-    $hubView = null; 
+// Fonction d'exemple pour le rendu d'un article
+function renderArticle($data, $lang) {
+    foreach ($data['content'] as $block) {
+        if ($block['type'] === 'title') {
+            echo "<h{$block['level']}>" . $block['text'][$lang] . "</h{$block['level']}>";
+        } 
+        elseif ($block['type'] === 'text') {
+            echo "<p>" . nl2br($block['content'][$lang]) . "</p>";
+        }
+    }
 }
 ?>
-
-<section class="core">
-
-    <?php if ($hubView): ?>
-        <?php $hubView->render(); ?>
-    <?php else: ?>
-        <p>Contenu temporairement indisponible.</p>
-    <?php endif; ?>
-
-</section>

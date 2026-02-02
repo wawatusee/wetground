@@ -1,0 +1,51 @@
+{
+    "type": "article",
+    "meta": {
+        "id": "Workstation booking",
+        "created": "2026-02-02",
+        "updated": "2026-02-02"
+    },
+    "content": [
+        {
+            "type": "title",
+            "level": 2,
+            "text": {
+                "fr": "Réservation poste de travail",
+                "en": "Workstation booking",
+                "nl": "Reservering van een werkplek"
+            }
+        },
+        {
+            "type": "text",
+            "content": {
+                "fr": "4 postes de travail sont mis à votre disposition dans l'espace de \"Wet Ground\". Un calendrier interactif est mis à votre disposition pour visualiser les créneaux disponibles et réserver un de ceux-ci. ",
+                "en": "Four workstations are available to you in the “Wet Ground” area.\nAn interactive calendar is provided so you can view available time slots and book one of them.\n",
+                "nl": "In de “Wet Ground”-ruimte zijn vier werkposten tot uw beschikking.\nEr wordt een interactieve kalender ter beschikking gesteld om de beschikbare tijdsloten te bekijken en een reservatie te maken.\nDe werkposten kunnen tijdens de openingsuren worden gereserveerd in tijdsloten van 1,5 uur.\n\nNa het volgen van een eerste gratis initiatiesessie wordt u ingeschreven op de lijst van ateliergebruikers en kunt u via deze kalender een reservatie aanvragen, die binnen dezelfde dag wordt bevestigd."
+            }
+        },
+        {
+            "type": "text",
+            "content": {
+                "fr": "Les postes de travail peuvent être réservés par tranche de 1h30 aux heures d'ouverture. ",
+                "en": "Workstations can be booked in 1.5-hour time slots during opening hours.",
+                "nl": "Er wordt een interactieve kalender ter beschikking gesteld om de beschikbare tijdsloten te bekijken en een reservatie te maken.\n"
+            }
+        },
+        {
+            "type": "text",
+            "content": {
+                "fr": "A près avoir reçu une première initiation gratuite, vous serez inscrits sur la liste des travailleurs de l'atelier et vous pourrez utiliser ce calendrier pour soumettre une réservation qui sera validé dans la journée.",
+                "en": "After receiving an initial free introductory session, you will be added to the list of workshop users and will then be able to use the calendar to submit a booking request, which will be validated within the day.",
+                "nl": "De werkposten kunnen tijdens de openingsuren worden gereserveerd in tijdsloten van 1,5 uur.\nNa het volgen van een eerste gratis initiatiesessie wordt u ingeschreven op de lijst van ateliergebruikers en kunt u via deze kalender een reservatie aanvragen, die binnen dezelfde dag wordt bevestigd."
+            }
+        },
+        {
+            "type": "text",
+            "content": {
+                "fr": "",
+                "en": "",
+                "nl": ""
+            }
+        }
+    ]
+}
