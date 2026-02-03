@@ -5,6 +5,10 @@
         {
             "type": "article_ref",
             "filename": "workshop.json"
+        },
+        {
+            "type": "gallery_ref",
+            "folder": "WORKSHOPS"
         }
     ]
 }
