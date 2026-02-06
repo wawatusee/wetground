@@ -1,152 +1,94 @@
 <?php
+class ImageUploader
+{
+    private $galleryPath;
 
-class ImageUploader {
-    private $uploadDir;
-    private $imageName;
-    private $imageFormat;
-
-    // Constructeur
-    public function __construct($uploadDir) {
-        $this->uploadDir = $uploadDir;
+    public function __construct($galleryPath)
+    {
+        // On attend ici le chemin vers le dossier parent de la galerie
+        $this->galleryPath = rtrim($galleryPath, '/\\') . DIRECTORY_SEPARATOR;
     }
 
-    // Méthode pour gérer l'upload d'une image
-    public function upload($file) {
+    public function upload($file)
+    {
         if (!isset($file) || $file['error'] != 0) {
-            throw new Exception("Invalid file upload: " . json_encode($file));
+            throw new Exception("Erreur upload: " . $file['error']);
         }
 
         $fileInfo = getimagesize($file['tmp_name']);
-        if ($fileInfo === false) {
-            throw new Exception("Invalid image file");
+        if (!$fileInfo)
+            throw new Exception("Fichier non image.");
+
+        $extension = image_type_to_extension($imageType = $fileInfo[2]);
+        $cleanName = $this->slugify(pathinfo($file['name'], PATHINFO_FILENAME)) . $extension;
+
+        $targetOriginal = $this->galleryPath . 'original' . DIRECTORY_SEPARATOR . $cleanName;
+        $targetThumb = $this->galleryPath . 'thumbs' . DIRECTORY_SEPARATOR . $cleanName;
+
+        if (move_uploaded_file($file['tmp_name'], $targetOriginal)) {
+            // 1. Optimisation de l'original (max 1280px)
+            $this->processResize($targetOriginal, $targetOriginal, 1280);
+            // 2. Création auto de la miniature (400px)
+            $this->processResize($targetOriginal, $targetThumb, 400);
+
+            return $cleanName;
         }
-
-        $imageType = $fileInfo[2];
-        if (!in_array($imageType, [IMAGETYPE_JPEG, IMAGETYPE_PNG, IMAGETYPE_GIF])) {
-            throw new Exception("Unsupported image format");
-        }
-
-        // Récupère le nom original et l'extension
-        $originalName = pathinfo($file['name'], PATHINFO_FILENAME);
-        $extension = image_type_to_extension($imageType); // Donne l'extension comme ".jpg" ou ".png"
-
-        // Utilise directement le nom original du fichier
-        $newName = $originalName . $extension;
-
-        // Crée le répertoire de destination s'il n'existe pas
-        if (!is_dir($this->uploadDir)) {
-            if (!mkdir($this->uploadDir, 0777, true)) {
-                throw new Exception("Failed to create upload directory");
-            }
-        }
-
-        // Chemin complet du fichier cible
-        $targetFile = $this->uploadDir . '/' . $newName;
-
-        // Déplace le fichier et redimensionne si nécessaire
-        if (move_uploaded_file($file['tmp_name'], $targetFile)) {
-            $this->resizeImage($targetFile, $imageType);
-            return $newName; // Retourne le nom du fichier final
-        } else {
-            throw new Exception("Failed to move uploaded file");
-        }
+        return false;
     }
 
-    // Méthode pour redimensionner une image
-    private function resizeImage($filePath, $imageType) {
-        // Charge l'image selon son type
-        switch ($imageType) {
+    private function processResize($input, $output, $width)
+    {
+        $info = getimagesize($input);
+        $type = $info[2];
+
+        switch ($type) {
             case IMAGETYPE_JPEG:
-                $image = imagecreatefromjpeg($filePath);
+                $img = imagecreatefromjpeg($input);
                 break;
             case IMAGETYPE_PNG:
-                $image = imagecreatefrompng($filePath);
+                $img = imagecreatefrompng($input);
                 break;
             case IMAGETYPE_GIF:
-                $image = imagecreatefromgif($filePath);
+                $img = imagecreatefromgif($input);
                 break;
             default:
-                throw new Exception("Unsupported image format");
+                return;
         }
 
-        $origWidth = imagesx($image);
-        $origHeight = imagesy($image);
-        $aspectRatio = $origWidth / $origHeight;
+        $origW = imagesx($img);
+        $origH = imagesy($img);
+        $ratio = $origW / $origH;
+        $newW = min($width, $origW);
+        $newH = round($newW / $ratio);
 
-        // Détermine les dimensions
-        if ($aspectRatio > 1) { // Paysage
-            $newWidth = 1280;
-            $newHeight = round(1280 / $aspectRatio);
-        } else { // Portrait
-            $newHeight = 1280;
-            $newWidth = round(1280 * $aspectRatio);
+        $tmp = imagecreatetruecolor($newW, $newH);
+
+        // Gestion de la transparence pour PNG/GIF
+        if ($type == IMAGETYPE_PNG || $type == IMAGETYPE_GIF) {
+            imagealphablending($tmp, false);
+            imagesavealpha($tmp, true);
         }
 
-        $newImage = imagecreatetruecolor($newWidth, $newHeight);
-        imagecopyresampled($newImage, $image, 0, 0, 0, 0, $newWidth, $newHeight, $origWidth, $origHeight);
+        imagecopyresampled($tmp, $img, 0, 0, 0, 0, $newW, $newH, $origW, $origH);
 
-        // Sauvegarde de l'image
-        switch ($imageType) {
+        switch ($type) {
             case IMAGETYPE_JPEG:
-                imagejpeg($newImage, $filePath);
+                imagejpeg($tmp, $output, 85);
                 break;
             case IMAGETYPE_PNG:
-                imagepng($newImage, $filePath);
+                imagepng($tmp, $output);
                 break;
             case IMAGETYPE_GIF:
-                imagegif($newImage, $filePath);
+                imagegif($tmp, $output);
                 break;
         }
 
-        // Libération des ressources
-        imagedestroy($image);
-        imagedestroy($newImage);
+        imagedestroy($img);
+        imagedestroy($tmp);
     }
-    // Méthode publique pour redimensionner une image à une largeur spécifique créée pour les miniatures
-    public function resizeToWidth(string $inputPath, string $outputPath, int $width): void {
-        // Charger l'image selon son type
-        $imageInfo = getimagesize($inputPath);
-        $imageType = $imageInfo[2];
 
-        switch ($imageType) {
-            case IMAGETYPE_JPEG:
-                $image = imagecreatefromjpeg($inputPath);
-                break;
-            case IMAGETYPE_PNG:
-                $image = imagecreatefrompng($inputPath);
-                break;
-            case IMAGETYPE_GIF:
-                $image = imagecreatefromgif($inputPath);
-                break;
-            default:
-                throw new Exception("Unsupported image format");
-        }
-
-        $origWidth = imagesx($image);
-        $origHeight = imagesy($image);
-        $aspectRatio = $origWidth / $origHeight;
-
-        $newWidth = $width;
-        $newHeight = round($width / $aspectRatio);
-
-        $newImage = imagecreatetruecolor($newWidth, $newHeight);
-        imagecopyresampled($newImage, $image, 0, 0, 0, 0, $newWidth, $newHeight, $origWidth, $origHeight);
-
-        // Sauvegarder l'image redimensionnée
-        switch ($imageType) {
-            case IMAGETYPE_JPEG:
-                imagejpeg($newImage, $outputPath);
-                break;
-            case IMAGETYPE_PNG:
-                imagepng($newImage, $outputPath);
-                break;
-            case IMAGETYPE_GIF:
-                imagegif($newImage, $outputPath);
-                break;
-        }
-
-        // Libérer les ressources
-        imagedestroy($image);
-        imagedestroy($newImage);
+    private function slugify($text)
+    {
+        return strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $text), '-'));
     }
 }

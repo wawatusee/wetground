@@ -4,6 +4,8 @@ define('ROOT_PATH', realpath(__DIR__ . '/../') . DIRECTORY_SEPARATOR);
 
 // Racine de l'administration
 define('ADMIN_PATH', __DIR__ . DIRECTORY_SEPARATOR);
+// Dans config_admin.php
+define('GALLERIES_DIR', ROOT_PATH . 'public/img/content/galleries' . DIRECTORY_SEPARATOR);
 
 // Pages accessibles dans l’admin
 define('ADMIN_PAGES', [

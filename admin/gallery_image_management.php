@@ -50,62 +50,54 @@ $repgalleries = $repImg . 'galleries/' . $galleryName . '/original';
     <script>
         function uploadImages() {
             const fileInput = document.getElementById('fileInput');
+            // On récupère le nom de la galerie depuis la variable PHP de la page
+            const galleryName = '<?= $galleryName ?>';
+
             if (fileInput.files.length === 0) {
                 alert("Please select image files");
                 return;
             }
 
-            const files = fileInput.files;
             const formData = new FormData();
+            const files = fileInput.files;
 
-            // Ajout des fichiers au formulaire
             for (let i = 0; i < files.length; i++) {
                 formData.append('images[]', files[i]);
             }
 
-            // Définition des paramètres pour l'upload
-            formData.append('uploadDir', '<?= $repgalleries ?>');
-            formData.append('width', 400); // Exemple de largeur
-            formData.append('height', 600); // Exemple de hauteur
-            formData.append('imageFormat', 'jpg');
+            // CES DEUX LIGNES SONT CELLES QUI MANQUENT PROBABLEMENT :
+            formData.append('action', 'upload');
+            formData.append('galleryName', galleryName);
 
-            // Vérification de la largeur dans la console
-            console.log("Chemin upload: ", formData.get('uploadDir'));
-            console.log("Width sent:", formData.get('width'));
-            fetch('upload.php', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok ' + response.statusText);
-                    }
-                    return response.json();
-                })
+            fetch('api/galleries_api.php', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        alert("Images uploaded successfully");
+                        alert("Upload réussi !");
+                        loadThumbnails();
                     } else {
-                        alert("Failed to upload images: " + data.error);
+                        // C'est ici que tu reçois "Paramètres manquants"
+                        alert("Erreur serveur : " + data.error);
                     }
                 })
-                .catch(error => {
-                    alert("Error uploading images: " + error);
-                });
+                .catch(error => alert("Erreur : " + error));
         }
     </script>
     <script>
         document.getElementById('refreshThumbsBtn').addEventListener('click', () => {
             const galleryName = '<?= htmlspecialchars($galleryName, ENT_QUOTES) ?>';
             fetch('refresh_gallery_thumbs.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: new URLSearchParams({
-                        galleryName
-                    }),
-                })
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                    galleryName
+                }),
+            })
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
@@ -125,14 +117,14 @@ $repgalleries = $repImg . 'galleries/' . $galleryName . '/original';
             const galleryName = '<?= htmlspecialchars($galleryName, ENT_QUOTES) ?>';
 
             fetch('load_thumbnails.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: new URLSearchParams({
-                        galleryName
-                    }),
-                })
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                    galleryName
+                }),
+            })
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
@@ -166,15 +158,15 @@ $repgalleries = $repImg . 'galleries/' . $galleryName . '/original';
             const galleryName = '<?= htmlspecialchars($galleryName, ENT_QUOTES) ?>';
             if (confirm(`Supprimer l'image ${imageName} ?`)) {
                 fetch('delete_image.php', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded'
-                        },
-                        body: new URLSearchParams({
-                            galleryName,
-                            imageName
-                        }),
-                    })
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: new URLSearchParams({
+                        galleryName,
+                        imageName
+                    }),
+                })
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
@@ -190,35 +182,32 @@ $repgalleries = $repImg . 'galleries/' . $galleryName . '/original';
             }
         }
 
-        // Renommer une image
+        // RENOMMER UNE IMAGE (DANS UNE GALERIE)
         function renameImage(oldName) {
-            const newName = prompt("Entrez le nouveau nom pour l'image (sans l'extension) :", oldName.split('.')[0]);
+            const newName = prompt("Nouveau nom (sans extension) :", oldName.split('.')[0]);
             if (!newName) return;
 
-            const galleryName = '<?= htmlspecialchars($galleryName, ENT_QUOTES) ?>';
-            fetch('rename_image.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                    },
-                    body: new URLSearchParams({
-                        galleryName,
-                        oldName,
-                        newName
-                    }),
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        alert(data.message);
-                        loadThumbnails(); // Recharger la galerie
-                    } else {
-                        alert("Erreur : " + data.error);
-                    }
-                })
-                .catch(error => {
-                    alert("Erreur : " + error.message);
-                });
+            const formData = new FormData();
+            formData.append('action', 'renameImage'); // À ajouter dans l'API si tu veux renommer les fichiers
+            formData.append('galleryName', '<?= $galleryName ?>');
+            formData.append('oldName', oldName);
+            formData.append('newName', newName);
+
+            fetch('api/galleries_api.php', { method: 'POST', body: formData })
+                .then(r => r.json())
+                .then(data => data.success ? loadThumbnails() : alert(data.error));
+        }
+        // SUPPRIMER LA GALERIE ENTIÈRE
+        function deleteThisGallery() {
+            if (!confirm("Attention : cela supprimera tous les fichiers. Continuer ?")) return;
+
+            const formData = new FormData();
+            formData.append('action', 'deleteGallery');
+            formData.append('galleryName', '<?= $galleryName ?>');
+
+            fetch('api/galleries_api.php', { method: 'POST', body: formData })
+                .then(r => r.json())
+                .then(data => data.success ? window.location.href = 'index.php' : alert(data.error));
         }
 
         // Charger les miniatures au démarrage
