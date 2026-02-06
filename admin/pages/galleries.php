@@ -14,9 +14,9 @@ if (isset($_GET['logout'])) {
 ?>
 <?php
 // index.php dans le dossier admin
-require_once 'gallery_manager.class.php';
+require_once './src/gallery_manager.class.php';
 // Définir le répertoire de base pour les galeries
-$baseDir = realpath(__DIR__ . '/../public/img/content/galleries/');
+$baseDir = realpath('../public/img/content/galleries/');
 $galleryManager = new GalleryManager($baseDir);
 // Gestion des requêtes
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {

@@ -1,7 +1,7 @@
 <?php
 require_once '../config_admin.php';
-require_once '../gallery_manager.class.php';
-require_once '../image_uploader.class.php';
+require_once '../src/gallery_manager.class.php';
+require_once '../src/image_uploader.class.php';
 
 header('Content-Type: application/json');
 
