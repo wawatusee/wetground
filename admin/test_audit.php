@@ -1,7 +1,7 @@
 <?php
 // Inclusion des ressources
 require_once 'config_admin.php';
-require_once 'gallery_manager.class.php';
+require_once './src/gallery_manager.class.php';
 
 header('Content-Type: text/plain');
 

@@ -45,24 +45,27 @@ const PageBlockTemplates = {
                 </div>`;
     },
     gallery_ref: (id, data = {}) => {
-        const selected = data.folder || '';
+        const selectedId = data.folder || ''; // On garde 'folder' comme clé pour la compatibilité
         const options = (window.availableGalleries || [])
-            .map(folder => `<option value="${folder}" ${selected === folder ? 'selected' : ''}>${folder}</option>`)
+            .map(gallery => {
+                // gallery.id est le nom du dossier, gallery.name est le nom lisible
+                return `<option value="${gallery.id}" ${selectedId === gallery.id ? 'selected' : ''}>${gallery.name}</option>`;
+            })
             .join('');
 
         return `
-        <div class="block-item" data-id="${id}" data-type="gallery_ref">
-            <div class="block-header">
-                <strong>🖼️ Galerie Photo</strong>
-                <button class="btn-delete-block" onclick="this.closest('.block-item').remove()">×</button>
-            </div>
-            <div class="block-body">
-                <select class="data-folder">
-                    <option value="">-- Sélectionner un dossier de photos --</option>
-                    ${options}
-                </select>
-            </div>
-        </div>`;
+    <div class="block-item" data-id="${id}" data-type="gallery_ref">
+        <div class="block-header">
+            <strong>🖼️ Galerie Photo</strong>
+            <button class="btn-delete-block" onclick="this.closest('.block-item').remove()">×</button>
+        </div>
+        <div class="block-body">
+            <select class="data-folder">
+                <option value="">-- Choisir une galerie --</option>
+                ${options}
+            </select>
+        </div>
+    </div>`;
     },
     contact_ref: (id, data = {}) => {
         const selected = data.filename || '';
@@ -149,18 +152,25 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // 2. Récupérer TOUTES les ressources nécessaires
+    // Chemin relatif depuis le dossier /admin/ où se trouve ton JS
+    const galleryIndexPath = '../public/img/content/galleries/galleries_index.json';
+
     Promise.all([
         fetch('api/get_articles_list.php').then(res => res.json()),
-        fetch('api/get_contacts_list.php').then(res => res.json())
-    ]).then(([articles, contacts]) => {
+        fetch('api/get_contacts_list.php').then(res => res.json()),
+        fetch(`${galleryIndexPath}?t=${Date.now()}`).then(res => {
+            if (!res.ok) return []; // Si le fichier n'existe pas encore, on renvoie un tableau vide
+            return res.json();
+        })
+    ]).then(([articles, contacts, galleries]) => {
         window.availableArticles = articles;
         window.availableContacts = contacts;
-        console.log("Builder prêt : Articles et Contacts chargés.");
+        window.availableGalleries = galleries;
 
-        // On peut même activer le bouton "Ajouter" seulement ici
+        console.log("Builder synchronisé directement sur l'index JSON.");
         btnAddBlock.disabled = false;
     }).catch(err => {
-        console.error("Erreur lors de l'initialisation du builder :", err);
+        console.error("Erreur critique au chargement des ressources :", err);
     });
 
     // 3. Ajouter un bloc
