@@ -3,7 +3,7 @@
     "meta": {
         "id": "stained-glass-hub",
         "created": "2026-01-20",
-        "updated": "2026-01-27"
+        "updated": "2026-02-03"
     },
     "content": [
         {
@@ -26,7 +26,7 @@
         {
             "type": "text",
             "content": {
-                "fr": "À partir de 2026, vous pourrez réserver votre espace directement depuis le calendrier de réservation.",
+                "fr": "À partir de 2026, vous pourrez réserver votre espace directement depuis le calendrier de réservation. Ci dessous une image du planning de réservation auquel vous aurez accès.",
                 "en": "Starting in 2026, you will be able to reserve your space directly through the booking calendar.",
                 "nl": "Vanaf 2026 kunt u uw plek reserveren via de reserveringskalender."
             }
