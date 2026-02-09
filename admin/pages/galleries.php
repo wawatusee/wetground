@@ -52,7 +52,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 // Affichage des galeries existantes
-$galleries = array_diff(scandir($baseDir), array('.', '..'));
+//$galleries = array_diff(scandir($baseDir), array('.', '..'));
+// GLOB_ONLYDIR ne renvoie que les répertoires.
+// On utilise basename car glob renvoie le chemin complet (ex: path/to/galerie)
+$galleries = array_map('basename', glob($baseDir . '/*' , GLOB_ONLYDIR));
 ?>
 <!DOCTYPE html>
 <html lang="fr">

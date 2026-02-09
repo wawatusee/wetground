@@ -3,7 +3,7 @@
     "meta": {
         "id": "workshop",
         "created": "2026-01-23",
-        "updated": "2026-02-02"
+        "updated": "2026-02-07"
     },
     "content": [
         {
@@ -29,6 +29,27 @@
                 "fr": "L’espace et le matériel de Wet Ground seront mis à disposition.\nLe maître des lieux accompagnera les participants dans l’apprentissage de nouvelles techniques.",
                 "en": "The Wet Ground space and equipment will be made available.\nThe master of the premises will guide participants in learning new techniques.",
                 "nl": "De ruimte en het materiaal van Wet Ground worden ter beschikking gesteld.\nDe meester van de werkplaats zal de deelnemers begeleiden bij het aanleren van nieuwe technieken."
+            }
+        },
+        {
+            "type": "list",
+            "content": {
+                "fr": [
+                    "fiduciaire",
+                    "cactus",
+                    "nénuphar"
+                ],
+                "en": [],
+                "nl": []
+            }
+        },
+        {
+            "type": "link",
+            "url": "http:\/\/kievu.com",
+            "content": {
+                "fr": "kievu",
+                "en": "",
+                "nl": ""
             }
         }
     ]

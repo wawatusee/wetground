@@ -88,6 +88,13 @@ try {
             $mgr->refreshIndex();
             echo json_encode(['success' => true, 'message' => 'Image supprimée']);
             break;
+        case 'refresh':
+            $success = $mgr->refreshIndex();
+            echo json_encode([
+                'success' => $success,
+                'message' => $success ? 'Index rafraîchi' : 'Erreur lors du rafraîchissement'
+            ]);
+            break;
 
         default:
             throw new Exception("Action non reconnue");

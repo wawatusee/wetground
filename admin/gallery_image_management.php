@@ -65,7 +65,6 @@ $repgalleries = $repImg . 'galleries/' . $galleryName . '/original';
                 formData.append('images[]', files[i]);
             }
 
-            // CES DEUX LIGNES SONT CELLES QUI MANQUENT PROBABLEMENT :
             formData.append('action', 'upload');
             formData.append('galleryName', galleryName);
 
@@ -89,43 +88,46 @@ $repgalleries = $repImg . 'galleries/' . $galleryName . '/original';
     <script>
         document.getElementById('refreshThumbsBtn').addEventListener('click', () => {
             const galleryName = '<?= htmlspecialchars($galleryName, ENT_QUOTES) ?>';
-            fetch('refresh_gallery_thumbs.php', {
+
+            // On prépare les données pour l'API centralisée
+            const formData = new FormData();
+            formData.append('action', 'refresh'); // On définit une action claire
+            formData.append('galleryName', galleryName);
+
+            fetch('api/galleries_api.php', { // <-- Nouvelle destination
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: new URLSearchParams({
-                    galleryName
-                }),
+                body: formData
             })
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) throw new Error("Erreur réseau");
+                    return response.json();
+                })
                 .then(data => {
                     if (data.success) {
-                        alert(data.message);
+                        alert("Miniatures et index rafraîchis avec succès !");
+                        loadThumbnails(); // On recharge l'affichage des images
                     } else {
                         alert("Erreur : " + data.error);
                     }
                 })
                 .catch(error => {
-                    alert("Erreur lors de l'appel AJAX : " + error.message);
+                    console.error("Erreur détaillée:", error);
+                    alert("Une erreur critique est survenue. Vérifiez la console.");
                 });
         });
     </script>
     <script>
-        // Charger les miniatures
+        const currentGalleryName = '<?= htmlspecialchars($galleryName, ENT_QUOTES) ?>';
         function loadThumbnails() {
-            const galleryName = '<?= htmlspecialchars($galleryName, ENT_QUOTES) ?>';
+            const params = new URLSearchParams();
+            params.append('action', 'list');
+            params.append('galleryName', currentGalleryName); // Assure-toi que cette variable est définie
 
-            fetch('load_thumbnails.php', {
+            fetch('api/galleries_api.php', { // <-- On pointe vers l'API
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: new URLSearchParams({
-                    galleryName
-                }),
+                body: params
             })
-                .then(response => response.json())
+                .then(res => res.json())
                 .then(data => {
                     if (data.success) {
                         const thumbnailsContainer = document.getElementById('thumbnailsContainer');
@@ -146,10 +148,23 @@ $repgalleries = $repImg . 'galleries/' . $galleryName . '/original';
                     } else {
                         alert("Erreur : " + data.error);
                     }
-                })
-                .catch(error => {
-                    console.error("Erreur lors du chargement des miniatures :", error);
-                    alert("Erreur lors du chargement des miniatures : " + error.message);
+                }).catch(err => console.error("Erreur de chargement:", err));
+        }
+        function refreshGalleryIndex() {
+            const formData = new FormData();
+            formData.append('action', 'list'); // Ou une action dédiée si tu veux juste forcer l'index
+            formData.append('galleryName', currentGalleryName);
+
+            fetch('api/galleries_api.php', {
+                method: 'POST',
+                body: formData
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        console.log("Index et miniatures synchronisés.");
+                        // Update ton UI ici
+                    }
                 });
         }
 
