@@ -71,15 +71,25 @@ class ImageUploader
 
         imagecopyresampled($tmp, $img, 0, 0, 0, 0, $newW, $newH, $origW, $origH);
 
+        // On définit l'extension de sortie de manière unique
+        $output = preg_replace('/\.(png|gif|jpeg|jpg)$/i', '.jpg', $output);
+
         switch ($type) {
             case IMAGETYPE_JPEG:
                 imagejpeg($tmp, $output, 85);
                 break;
             case IMAGETYPE_PNG:
-                imagepng($tmp, $output);
+                // Créer un fond blanc pour la transparence du PNG
+                $background = imagecreatetruecolor(imagesx($tmp), imagesy($tmp));
+                $white = imagecolorallocate($background, 255, 255, 255);
+                imagefill($background, 0, 0, $white);
+                imagecopyresampled($background, $tmp, 0, 0, 0, 0, imagesx($tmp), imagesy($tmp), imagesx($tmp), imagesy($tmp));
+
+                imagejpeg($background, $output, 85); // On sauvegarde en JPG
+                imagedestroy($background);
                 break;
             case IMAGETYPE_GIF:
-                imagegif($tmp, $output);
+                imagejpeg($tmp, $output, 85); // Le GIF se convertit facilement en JPG
                 break;
         }
 

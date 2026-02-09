@@ -40,16 +40,27 @@ class GalleryManager
         }
     }
 
-    public function deleteGallery($name)
+    public function deleteImage($galleryName, $filename)
     {
-        $galleryDir = $this->baseDir . $this->formatGalleryName($name);
+        // 1. Sécurisation des noms pour éviter les injections de chemin
+        $galleryName = basename($galleryName);
+        $filename = basename($filename);
 
-        if (is_dir($galleryDir)) {
-            $this->deleteDirectory($galleryDir);
-            $this->refreshIndex(); // Mise à jour auto après suppression
-        } else {
-            throw new Exception("Galerie introuvable.");
-        }
+        // 2. Construction du chemin vers LA galerie spécifique
+        // On part de baseDir (racine) + nom de la galerie
+        $galleryPath = $this->baseDir . $galleryName . DIRECTORY_SEPARATOR;
+
+        $original = $galleryPath . 'original' . DIRECTORY_SEPARATOR . $filename;
+        $thumb = $galleryPath . 'thumbs' . DIRECTORY_SEPARATOR . $filename;
+
+        // 3. Suppression physique
+        if (file_exists($original))
+            unlink($original);
+        if (file_exists($thumb))
+            unlink($thumb);
+
+        // 4. Mise à jour de l'index
+        return $this->refreshIndex();
     }
 
     // --- NOUVELLE MÉTHODE : LE PONT VERS LE BUILDER ---
@@ -90,12 +101,54 @@ class GalleryManager
         return strtoupper(str_replace(' ', '-', trim($name)));
     }
 
-    private function deleteDirectory($dir)
+    /* private function deleteDirectory($dir)
+     {
+         $files = array_diff(scandir($dir), array('.', '..'));
+         foreach ($files as $file) {
+             (is_dir("$dir/$file")) ? $this->deleteDirectory("$dir/$file") : unlink("$dir/$file");
+         }
+         return rmdir($dir);
+     }*/
+    public function deleteGallery($galleryName)
     {
-        $files = array_diff(scandir($dir), array('.', '..'));
-        foreach ($files as $file) {
-            (is_dir("$dir/$file")) ? $this->deleteDirectory("$dir/$file") : unlink("$dir/$file");
+        $galleryName = basename($galleryName);
+        $galleryPath = $this->baseDir . $galleryName . DIRECTORY_SEPARATOR;
+
+        if (!is_dir($galleryPath))
+            return false;
+
+        // 1. Liste des sous-dossiers à vider
+        $subfolders = ['original', 'thumbs'];
+
+        foreach ($subfolders as $sub) {
+            $path = $galleryPath . $sub . DIRECTORY_SEPARATOR;
+            if (is_dir($path)) {
+                // On vide tous les fichiers du sous-dossier
+                $files = glob($path . '*');
+                foreach ($files as $file) {
+                    if (is_file($file))
+                        unlink($file);
+                }
+                // On supprime le sous-dossier maintenant vide
+                rmdir($path);
+            }
         }
-        return rmdir($dir);
+
+        // 2. Supprimer les fichiers qui traîneraient à la racine de la galerie (ex: index.json local)
+        $remainingFiles = glob($galleryPath . '*');
+        foreach ($remainingFiles as $file) {
+            if (is_file($file))
+                unlink($file);
+        }
+
+        // 3. Enfin, on supprime le dossier de la galerie lui-même
+        $success = rmdir($galleryPath);
+
+        // 4. On met à jour l'index global pour faire disparaître la galerie de la liste
+        if ($success) {
+            $this->refreshIndex();
+        }
+
+        return $success;
     }
 }

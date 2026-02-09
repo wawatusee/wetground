@@ -169,32 +169,34 @@ $repgalleries = $repImg . 'galleries/' . $galleryName . '/original';
         }
 
         // Supprimer une image
-        function deleteImage(imageName) {
-            const galleryName = '<?= htmlspecialchars($galleryName, ENT_QUOTES) ?>';
-            if (confirm(`Supprimer l'image ${imageName} ?`)) {
-                fetch('delete_image.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                    },
-                    body: new URLSearchParams({
-                        galleryName,
-                        imageName
-                    }),
+        function deleteImage(filename) {
+            if (!confirm('Supprimer cette image ?')) return;
+
+            const formData = new FormData();
+            formData.append('action', 'delete'); // On dit à l'API ce qu'on veut faire
+            formData.append('galleryName', currentGalleryName);
+            formData.append('filename', filename);
+
+            // CHANGE ICI : On pointe vers l'API centrale
+            fetch('api/galleries_api.php', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => {
+                    if (!response.ok) throw new Error("Fichier API introuvable (404)");
+                    return response.json();
                 })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            alert(data.message);
-                            loadThumbnails(); // Recharger la galerie
-                        } else {
-                            alert("Erreur : " + data.error);
-                        }
-                    })
-                    .catch(error => {
-                        alert("Erreur : " + error.message);
-                    });
-            }
+                .then(data => {
+                    if (data.success) {
+                        loadThumbnails(); // On rafraîchit l'affichage
+                    } else {
+                        alert("Erreur : " + data.error);
+                    }
+                })
+                .catch(error => {
+                    console.error("Erreur:", error);
+                    alert("Impossible de supprimer l'image.");
+                });
         }
 
         // RENOMMER UNE IMAGE (DANS UNE GALERIE)

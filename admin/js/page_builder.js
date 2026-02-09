@@ -116,13 +116,6 @@ class PageEditor {
 
     addBlock(type, data = {}) {
         if (!this.blockRegistry[type]) return;
-
-        // LOG DE DEBUG
-        if (type === 'gallery_ref') {
-            console.log("🛠️ Rendu galerie pour :", data.folder);
-            console.log("📚 Galeries disponibles en mémoire :", this.resources.galleries);
-        }
-
         const id = 'block_' + Date.now();
         const html = this.blockRegistry[type].render(id, data);
         document.getElementById('page-blocks-container').insertAdjacentHTML('beforeend', html);

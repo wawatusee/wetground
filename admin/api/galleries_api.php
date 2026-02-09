@@ -70,24 +70,29 @@ try {
             break;
 
         case 'deleteGallery':
-            if (!$galleryName)
-                throw new Exception("Nom de galerie manquant");
+            $galleryName = $_POST['galleryName'] ?? null;
 
-            $mgr->deleteGallery($galleryName);
-            echo json_encode(['success' => true, 'message' => 'Galerie supprimée']);
-            break;
+            if ($galleryName) {
+                // Attention : assure-toi que ta méthode s'appelle bien deleteGallery
+                $result = $mgr->deleteGallery($galleryName);
+                echo json_encode(['success' => $result]);
+            } else {
+                echo json_encode(['success' => false, 'error' => 'Nom de galerie manquant']);
+            }
+            exit;
 
         case 'delete':
-            $imageName = $_POST['imageName'] ?? null;
-            if (!$imageName)
-                throw new Exception("Nom d'image manquant");
+            $galleryName = $_POST['galleryName'] ?? null;
+            $filename = $_POST['filename'] ?? null;
 
-            unlink($galleryPath . 'original/' . $imageName);
-            unlink($galleryPath . 'thumbs/' . $imageName);
-
-            $mgr->refreshIndex();
-            echo json_encode(['success' => true, 'message' => 'Image supprimée']);
-            break;
+            if ($galleryName && $filename) {
+                // On passe les deux arguments ici
+                $result = $mgr->deleteImage($galleryName, $filename);
+                echo json_encode(['success' => $result]);
+            } else {
+                echo json_encode(['success' => false, 'error' => 'Données manquantes']);
+            }
+            exit;
         case 'refresh':
             $success = $mgr->refreshIndex();
             echo json_encode([
