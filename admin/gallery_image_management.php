@@ -26,7 +26,7 @@ $repgalleries = $repImg . 'galleries/' . $galleryName . '/original';
 <body>
     <header>
         <h1>Gestion des Images de la galerie: <?= $galleryName ?></h1>
-        <a href="index.php">Back to galleries</a>
+        <a href="galleries.php">Back to galleries</a><a href="index.php">Admin</a>
     </header>
     <main>
         <section class="form-contener">

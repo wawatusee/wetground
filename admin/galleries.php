@@ -66,6 +66,7 @@ $galleries = array_diff(scandir($baseDir), array('.', '..'));
 <body>
     <header>
         <h1>Gestionnaire de Galeries</h1>
+        <a href="index.php">Admin</a>
     </header>
     <main>
         <section class="form-contener">

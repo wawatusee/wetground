@@ -1,13 +1,11 @@
 <?php
-require_once '../src/view/article_view.php';
+require_once ROOT.'src/view/article_view.php';
+echo "<h2>lapin 1 (Inclusion OK)</h2>";
 
-// Le développeur voit exactement le chemin utilisé
-$path = __DIR__ . '/json/workshop.json'; 
-$lang = 'fr';
+$path = ROOT . 'json/articles/workshop.json'; // Vérifie bien ce chemin !
+$article = new ArticleView($path, 'fr');
+echo "<h2>lapin 2 (Instanciation OK)</h2>";
 
-$article = new ArticleView($path, $lang);
+$article->render();
+echo "<h2>lapin 3 (Rendu terminé)</h2>";
 ?>
-
-<div class="container">
-    <?php $article->render(); ?>
-</div>

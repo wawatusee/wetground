@@ -10,7 +10,7 @@ define('ADMIN_PAGES', [
     'dashboard',
     'pages',
     'articles',
-    'galleries',
+
     'contacts'
 ]);
 
