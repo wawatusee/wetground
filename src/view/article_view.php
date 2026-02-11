@@ -1,83 +1,58 @@
 <?php
-class ArticleView
-{
-    private array $data;
-    private string $lang;
+class ArticleView {
+    private $data;
+    private $lang;
 
-    public function __construct(array $data, string $lang)
-    {
-        $this->data = $data;
+    /**
+     * @param string $fullPath Chemin complet vers le fichier JSON
+     * @param string $lang Langue à afficher ('fr', 'en', etc.)
+     */
+    public function __construct(string $fullPath, string $lang = 'fr') {
         $this->lang = $lang;
+
+        if (file_exists($fullPath)) {
+            $jsonContent = file_get_contents($fullPath);
+            $this->data = json_decode($jsonContent, true);
+        } else {
+            $this->data = null;
+        }
     }
 
-    /**
-     * Gère la traduction avec fallback
-     */
-    private function translate($field): string|array
-    {
-        if (is_array($field) && isset($field[$this->lang])) {
-            return $field[$this->lang];
-        }
-        // Si c'est un tableau de langues mais que la langue choisie n'existe pas
-        if (is_array($field)) {
-            return reset($field);
-        }
-        // Si ce n'est pas un tableau (ex: un niveau de titre), on rend tel quel
-        return $field;
-    }
-
-    /**
-     * Point d'entrée principal pour le rendu
-     */
-    public function render(): void
-    {
-        if (!isset($this->data['content']) || !is_array($this->data['content'])) {
-            echo "<p>Aucun contenu disponible.</p>";
+    public function render(): void {
+        if (!$this->data || !isset($this->data['content'])) {
+            echo "";
             return;
         }
 
+        echo '<article class="nucleus-article">';
         foreach ($this->data['content'] as $block) {
-            $this->renderBlock($block);
+            echo $this->renderBlock($block);
         }
+        echo '</article>';
     }
 
-    /**
-     * Dispatcher de rendu selon le type de bloc
-     */
-    private function renderBlock(array $block): void
-    {
+    private function renderBlock(array $block): string {
         switch ($block['type']) {
             case 'title':
                 $level = $block['level'] ?? 2;
-                $text = $this->translate($block['text']);
-                echo "<h{$level}>" . htmlspecialchars($text) . "</h{$level}>";
-                break;
+                $text  = $block['text'][$this->lang] ?? ($block['text']['fr'] ?? '');
+                return <<<HTML
+<h{$level} class="nucleus-title">{$text}</h{$level}>
+
+HTML;
 
             case 'text':
-                $content = $this->translate($block['content']);
-                // nl2br permet de garder les retours à la ligne si l'admin en saisit
-                echo "<p>" . nl2br(htmlspecialchars($content)) . "</p>";
-                break;
+                $content = $block['content'][$this->lang] ?? ($block['content']['fr'] ?? '');
+                $formattedContent = nl2br(htmlspecialchars($content));
+                return <<<HTML
+<div class="nucleus-text-block">
+    <p>{$formattedContent}</p>
+</div>
 
-            case 'list':
-                $style = $block['style'] ?? 'ul';
-                $items = $this->translate($block['items']); // Retourne le tableau de la langue
-                echo "<{$style}>";
-                foreach ($items as $item) {
-                    echo "<li>" . htmlspecialchars($item) . "</li>";
-                }
-                echo "</{$style}>";
-                break;
-
-            case 'link':
-                $label = $this->translate($block['label']);
-                $url = $block['url'] ?? '#';
-                echo "<a href='" . htmlspecialchars($url) . "' class='btn-article'>" . htmlspecialchars($label) . "</a>";
-                break;
+HTML;
 
             default:
-                echo "";
-                break;
+                return "";
         }
     }
 }

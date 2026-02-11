@@ -29,9 +29,8 @@ $menuComponent->render(); // Affichage direct du menu
 /*
 $multiChoicesComponent = new ViewGalleryChoices($galleryChoices, $page, $selectedGallery);
 $multiChoicesComponent->render(); // Affichage direct du sélecteur
-*/?>
-<ul class="gallery-menu" id="galleryMenu"><li class="gallery-item"><a href="?page=catalog&amp;gallery=LEAD%2BTIFFANY">LEAD+TIFFANY</a></li><li class="gallery-item selected-item"><a href="?page=catalog&amp;gallery=PICTURE-ON-GLASS">PICTURE-ON-GLASS</a></li></ul>
-<?php
+*/
+
 // Définir la galerie courante à afficher
 $galleryName = !empty($selectedGallery) && in_array($selectedGallery, $galleryChoices)
     ? $selectedGallery : (isset($galleryChoices[0]) ? $galleryChoices[0] : null);

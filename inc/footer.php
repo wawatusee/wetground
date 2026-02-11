@@ -32,6 +32,6 @@ $d = $contactModel;
         </nav>
     </div>
 
-    <img class="footer-logo" src="<?= $repImgDeco ?>logo.svg" alt="">
+
 
 </footer>

@@ -42,21 +42,29 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Objet final
+        // --- CONSTRUCTION DYNAMIQUE DU MULTILINGUE ---
+        const roleObj = {};
+        const addressObj = {};
 
+        if (window.siteLangs && Array.isArray(window.siteLangs)) {
+            window.siteLangs.forEach(lang => {
+                // On récupère les valeurs des champs générés par le PHP
+                const roleInput = document.getElementById(`contact-role-${lang}`);
+                const addressInput = document.getElementById(`contact-address-${lang}`);
+
+                if (roleInput) roleObj[lang] = roleInput.value;
+                if (addressInput) addressObj[lang] = addressInput.value;
+            });
+        }
+
+        // Objet final
         const contactData = {
             name: document.getElementById('contact-name').value,
             phone: document.getElementById('contact-phone').value,
             email: document.getElementById('contact-email').value,
             map_url: document.getElementById('contact-map-url').value,
-            role: {
-                fr: document.getElementById('contact-role-fr').value,
-                en: document.getElementById('contact-role-en').value
-            },
-            address: {
-                fr: document.getElementById('contact-address-fr').value,
-                en: document.getElementById('contact-address-en').value
-            },
+            role: roleObj,        // Utilise l'objet dynamique
+            address: addressObj,  // Utilise l'objet dynamique
             socials: socials
         };
 
@@ -73,7 +81,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const result = await response.json();
             if (result.success) {
                 alert('Fiche contact enregistrée avec succès !');
-                // Optionnel : recharger la liste des contacts
                 loadContactsList();
             } else {
                 alert('Erreur : ' + result.error);
@@ -105,16 +112,34 @@ document.addEventListener('DOMContentLoaded', () => {
     // 5. Charger les données d'un contact existant pour modification
     async function loadContact(filename) {
         try {
-            const response = await fetch(`../json/contacts/${filename}`);
+            const response = await fetch(`../json/contacts/${filename}?t=${Date.now()}`);
             const data = await response.json();
 
-            // Remplissage des champs de base
-            document.getElementById('contact-name').value = data.name || '';
-            document.getElementById('contact-phone').value = data.phone || '';
-            document.getElementById('contact-email').value = data.email || '';
-            document.getElementById('contact-role-fr').value = data.role_fr || '';
-            document.getElementById('contact-role-en').value = data.role_en || '';
+            // Fonction utilitaire interne pour remplir un champ s'il existe
+            const fillField = (id, value) => {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.value = value || '';
+                } else {
+                    console.warn(`Champ introuvable dans le HTML : ${id}`);
+                }
+            };
+
+            // Remplissage sécurisé
+            fillField('contact-name', data.name);
+            fillField('contact-phone', data.phone);
+            fillField('contact-email', data.email);
+            fillField('contact-map-url', data.map_url); // C'est ici que ça plantait !
+
             filenamePreview.textContent = filename;
+
+            // Boucle multilingue (déjà sécurisée normalement)
+            if (window.siteLangs) {
+                window.siteLangs.forEach(lang => {
+                    fillField(`contact-role-${lang}`, data.role ? data.role[lang] : '');
+                    fillField(`contact-address-${lang}`, data.address ? data.address[lang] : '');
+                });
+            }
 
             // Remplissage des réseaux sociaux
             socialContainer.innerHTML = ''; // On vide l'existant
@@ -130,6 +155,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     socialContainer.appendChild(clone);
                 });
+            }
+            if (data.role) {
+                document.getElementById('contact-role-fr').value = data.role.fr || '';
+                document.getElementById('contact-role-en').value = data.role.en || '';
+            }
+
+            // Pour l'Adresse (C'était manquant dans ton load)
+            if (data.address) {
+                document.getElementById('contact-address-fr').value = data.address.fr || '';
+                document.getElementById('contact-address-en').value = data.address.en || '';
             }
         } catch (error) {
             console.error('Erreur chargement contact:', error);

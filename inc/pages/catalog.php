@@ -54,7 +54,7 @@ $multiChoicesComponent->render(); // Affichage direct du sélecteur
 
 // Définir la galerie courante à afficher
 $galleryName = !empty($selectedGallery) && in_array($selectedGallery, $galleryChoices)
-    ? $selectedGallery : (isset($galleryChoices[0]) ? $galleryChoices[1] : null);
+    ? $selectedGallery : (isset($galleryChoices[0]) ? $galleryChoices[0] : null);
 
 // Inclure et afficher les vues de la galerie
 require_once('../src/model/gallery_model.php');
