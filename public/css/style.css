@@ -49,7 +49,7 @@ main {
 
 @font-face {
   font-family: "myFirstFont";
-  src: url("./fonts/Helroty-Regular.ttf");
+  src: url("./fonts/Helroty-Regular.otf");
   /*src: url("./fonts/Hind-Regular.ttf");*/
 }
 

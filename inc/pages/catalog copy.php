@@ -23,15 +23,35 @@ $galleryChoices = $galleriesDatas->getGalleryChoices(); // Récupérer le tablea
 
 // Instancier et afficher le NOUVEAU menu de galerie (ACTIVÉ)
 $menuComponent = new ViewGalleryMenu($galleryChoices, $page, $selectedGallery);
-$menuComponent->render(); // Affichage direct du menu
+//MENU DYNAMIQUE PRENANT TOUS LES REPERTOIRES D'IMAGES PRESENTS dans galleries 
+// //$menuComponent->render(); // Affichage direct du menu
+//Le menu dynamique a été commenté pour être remplacé par un menu écrit ci dessous 
+?>
+<?php
+//MENU EN DUR POUR PAGE CATALOG BREGJE UNE AUTRE INTERFACE SERAIT PREFERABLE
+$menuItems = [
+    'LEAD+TIFFANY' => 'LEAD+TIFFANY',
+    'PICTURE-ON-GLASS' => 'PICTURE-ON-GLASS'
+];
+?>
+<ul class="gallery-menu" id="galleryMenu">
+    <?php foreach ($menuItems as $value => $label): ?>
+        <li class="gallery-item <?= ($selectedGallery === $value) ? 'selected-item' : '' ?>">
+            <a href="?page=catalog&gallery=<?= urlencode($value) ?>">
+                <?= htmlspecialchars($label) ?>
+            </a>
+        </li>
+    <?php endforeach; ?>
+</ul>
+    <!--FIN DU MENU EN DUR POUR PAGE CATALOG BREGJE-->
 
+<?php
 // Instancier et afficher le sélecteur de galerie (COMMENTÉ)
 /*
 $multiChoicesComponent = new ViewGalleryChoices($galleryChoices, $page, $selectedGallery);
 $multiChoicesComponent->render(); // Affichage direct du sélecteur
-*/?>
-<ul class="gallery-menu" id="galleryMenu"><li class="gallery-item"><a href="?page=catalog&amp;gallery=LEAD%2BTIFFANY">LEAD+TIFFANY</a></li><li class="gallery-item selected-item"><a href="?page=catalog&amp;gallery=PICTURE-ON-GLASS">PICTURE-ON-GLASS</a></li></ul>
-<?php
+*/
+
 // Définir la galerie courante à afficher
 $galleryName = !empty($selectedGallery) && in_array($selectedGallery, $galleryChoices)
     ? $selectedGallery : (isset($galleryChoices[0]) ? $galleryChoices[0] : null);
@@ -55,7 +75,7 @@ try {
     echo "Erreur : " . $e->getMessage();
 }
 ?>
-
+?>
 <!-- /container -->
 <script src="js/imagesloaded.pkgd.min.js"></script>
 <script src="js/masonry.pkgd.min.js"></script>

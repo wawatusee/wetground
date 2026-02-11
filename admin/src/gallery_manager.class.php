@@ -68,29 +68,36 @@ class GalleryManager
     public function refreshIndex()
     {
         $galleries = [];
-        // On récupère les dossiers en excluant les fichiers
         $folders = array_filter(glob($this->baseDir . '*'), 'is_dir');
 
-        foreach ($folders as $folderPath) {
-            $folderName = basename($folderPath);
+        foreach ($folders as $folder) {
+            $name = basename($folder);
+            $thumbsDir = $folder . DIRECTORY_SEPARATOR . 'thumbs';
+            $images = [];
 
-            // On cherche les images dans le dossier thumbs
-            $thumbPath = $folderPath . DIRECTORY_SEPARATOR . 'thumbs' . DIRECTORY_SEPARATOR;
+            if (is_dir($thumbsDir)) {
+                // Le secret : on cherche toutes les extensions possibles en une seule fois
+                // Le GLOB_BRACE permet de chercher {jpg,jpeg,png,gif} sans distinction
+                $files = glob($thumbsDir . DIRECTORY_SEPARATOR . '*.{jpg,jpeg,JPG,JPEG,png,PNG,gif,GIF}', GLOB_BRACE);
 
-            // glob avec BRACE pour gérer plusieurs extensions et insensibilité à la casse
-            $images = glob($thumbPath . "*.{jpg,jpeg,png,gif,JPG,JPEG,PNG,GIF}", GLOB_BRACE);
-
-            $count = count($images);
+                if ($files) {
+                    foreach ($files as $file) {
+                        $images[] = [
+                            'name' => basename($file),
+                            'url' => 'img/content/galleries/' . $name . '/thumbs/' . basename($file)
+                        ];
+                    }
+                }
+            }
 
             $galleries[] = [
-                'id' => $folderName,
-                'name' => str_replace('-', ' ', $folderName),
-                'cover' => ($count > 0) ? basename($images[0]) : null,
-                'count' => $count
+                'id' => $name,
+                'name' => str_replace(['-', '_'], ' ', $name),
+                'images' => $images
             ];
         }
 
-        return file_put_contents($this->indexPath, json_encode($galleries, JSON_PRETTY_PRINT), LOCK_EX);
+        return file_put_contents($this->indexPath, json_encode($galleries, JSON_PRETTY_PRINT));
     }
 
     // --- UTILITAIRES ---
@@ -150,5 +157,54 @@ class GalleryManager
         }
 
         return $success;
+    }
+    private function generateWebVersion($inputPath, $outputPath, $type)
+    {
+        // 1. Chargement précis (selon ton ancienne classe)
+        switch ($type) {
+            case IMAGETYPE_JPEG:
+                $source = imagecreatefromjpeg($inputPath);
+                break;
+            case IMAGETYPE_PNG:
+                $source = imagecreatefrompng($inputPath);
+                break;
+            case IMAGETYPE_GIF:
+                $source = imagecreatefromgif($inputPath);
+                break;
+            default:
+                return false;
+        }
+
+        $w = imagesx($source);
+        $h = imagesy($source);
+        $aspectRatio = $w / $h;
+
+        // 2. TON ANCIENNE LOGIQUE DE RATIO (Le secret du Masonry)
+        if ($aspectRatio > 1) { // Paysage
+            $newW = 1280;
+            $newH = round(1280 / $aspectRatio);
+        } else { // Portrait
+            $newH = 1280;
+            $newW = round(1280 * $aspectRatio);
+        }
+
+        // 3. Création de l'image de travail
+        $target = imagecreatetruecolor($newW, $newH);
+
+        // GESTION DE LA TRANSPARENCE (Indispensable pour tes PNG)
+        imagealphablending($target, false);
+        imagesavealpha($target, true);
+        $white = imagecolorallocate($target, 255, 255, 255);
+        imagefill($target, 0, 0, $white);
+
+        imagecopyresampled($target, $source, 0, 0, 0, 0, $newW, $newH, $w, $h);
+
+        // 4. SAUVEGARDE EN JPEG (Pour la légèreté sur le site public)
+        // On force l'extension .jpg pour l'indexation facile
+        imagejpeg($target, $outputPath, 85);
+
+        imagedestroy($source);
+        imagedestroy($target);
+        return true;
     }
 }

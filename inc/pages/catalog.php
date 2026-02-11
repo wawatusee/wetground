@@ -1,131 +1,118 @@
-<p>
-    the pieces displayed on this page are not for sale. If you're interested in a picture on glass, don't hesitate to
-    contact me. You can choose colour and size!</p>
-
-
 <?php
-// Récupérer la galerie sélectionnée et la page courante
-$selectedGallery = isset($_GET['gallery']) ? htmlspecialchars($_GET['gallery']) : '';
-$page = isset($_GET['page']) ? htmlspecialchars($_GET['page']) : 1;
+/**
+ * CATALOG.PHP - Version Stabilisée
+ */
 
-// Inclure les modèles et vues
-require_once('../src/model/model_galleries_choices.php');
-//remplacement du sélecteur par un menu simple
-// L'ancienne vue est commentée
-//require_once('../src/view/view_galleries_choices.php');
+// 1. Chemins et Constantes (On utilise tes constantes si définies, sinon fallback)
+$basePath = defined('IMG_URL') ? IMG_URL : '../public/img/';
+$indexPath = '../img/content/galleries/galleries_index.json';
 
-// Inclusion de la nouvelle vue
-require_once('../src/view/view_gallery_menu.php');
+// 2. Récupération des données
+$galleriesData = [];
+if (file_exists($indexPath)) {
+    $json = file_get_contents($indexPath);
+    $galleriesData = json_decode($json, true) ?: [];
+}
 
-// Récupérer les données des galeries (DECOMMENTÉ)
-$galleriesDatas = new ModelGalleryChoices('img/content/galleries/');
-$galleryChoices = $galleriesDatas->getGalleryChoices(); // Récupérer le tableau des galeries
+// 3. Galerie sélectionnée
+$selectedGallery = isset($_GET['gallery']) ? htmlspecialchars($_GET['gallery']) : 'LEAD+TIFFANY';
+$currentGalleryImages = [];
 
-// Instancier et afficher le NOUVEAU menu de galerie (ACTIVÉ)
-$menuComponent = new ViewGalleryMenu($galleryChoices, $page, $selectedGallery);
-//MENU DYNAMIQUE PRENANT TOUS LES REPERTOIRES D'IMAGES PRESENTS dans galleries 
-// //$menuComponent->render(); // Affichage direct du menu
-//Le menu dynamique a été commenté pour être remplacé par un menu écrit ci dessous 
-?>
-<?php
-//MENU EN DUR POUR PAGE CATALOG BREGJE UNE AUTRE INTERFACE SERAIT PREFERABLE
-$menuItems = [
-    'LEAD+TIFFANY' => 'LEAD+TIFFANY',
-    'PICTURE-ON-GLASS' => 'PICTURE-ON-GLASS'
-];
-?>
-<ul class="gallery-menu" id="galleryMenu">
-    <?php foreach ($menuItems as $value => $label): ?>
-        <li class="gallery-item <?= ($selectedGallery === $value) ? 'selected-item' : '' ?>">
-            <a href="?page=catalog&gallery=<?= urlencode($value) ?>">
-                <?= htmlspecialchars($label) ?>
-            </a>
-        </li>
-    <?php endforeach; ?>
-</ul>
-    <!--FIN DU MENU EN DUR POUR PAGE CATALOG BREGJE-->
-
-<?php
-// Instancier et afficher le sélecteur de galerie (COMMENTÉ)
-/*
-$multiChoicesComponent = new ViewGalleryChoices($galleryChoices, $page, $selectedGallery);
-$multiChoicesComponent->render(); // Affichage direct du sélecteur
-*/
-
-// Définir la galerie courante à afficher
-$galleryName = !empty($selectedGallery) && in_array($selectedGallery, $galleryChoices)
-    ? $selectedGallery : (isset($galleryChoices[0]) ? $galleryChoices[0] : null);
-
-// Inclure et afficher les vues de la galerie
-require_once('../src/model/gallery_model.php');
-require_once("../src/view/gallery_view.php");
-
-// Chemin des images pour la galerie sélectionnée
-$cheminImages = $repImg . 'galleries/' . $galleryName . '/original';
-
-try {
-    // Instancie le modèle pour obtenir les images
-    $gallery = new Model_gallery($cheminImages, 'image/jpeg');
-    $images = $gallery->getImages();
-    //Important, en deuxième paramètre de l'instance de View_gallery, le nom du dossier à traiter $galleryName
-// Crée la vue avec la classe View_gallery
-    $view = new View_gallery($images, $galleryName);
-    echo $view->render(); // Affiche la galerie
-} catch (Exception $e) {
-    echo "Erreur : " . $e->getMessage();
+foreach ($galleriesData as $g) {
+    if (isset($g['id']) && strtoupper($g['id']) === strtoupper($selectedGallery)) {
+        $currentGalleryImages = $g['images'] ?? [];
+        break;
+    }
 }
 ?>
-?>
-<!-- /container -->
+
+<p class="catalog-intro">
+    The pieces displayed on this page are not for sale. If you're interested in a picture on glass, don't hesitate to
+    contact me. You can choose colour and size!
+</p>
+
+<ul class="gallery-menu" id="galleryMenu">
+    <li class="gallery-item <?= ($selectedGallery === 'LEAD+TIFFANY') ? 'selected-item' : '' ?>">
+        <a href="?page=catalog&gallery=LEAD+TIFFANY">LEAD+TIFFANY</a>
+    </li>
+    <li class="gallery-item <?= ($selectedGallery === 'PICTURE-ON-GLASS') ? 'selected-item' : '' ?>">
+        <a href="?page=catalog&gallery=PICTURE-ON-GLASS">PICTURE-ON-GLASS</a>
+    </li>
+</ul>
+
+<div class="grid">
+    <?php if (!empty($currentGalleryImages)): ?>
+        <?php foreach ($currentGalleryImages as $image): ?>
+            <div class="grid__item" data-size="1280x1280">
+                <a href="img/content/galleries/<?= $selectedGallery ?>/original/<?= $image['name'] ?>" class="img-wrap">
+                    <img src="img/content/galleries/<?= $selectedGallery ?>/thumbs/<?= $image['name'] ?>"
+                        alt="<?= htmlspecialchars($image['name']) ?>" loading="lazy" />
+                </a>
+            </div>
+        <?php endforeach; ?>
+    <?php else: ?>
+        <p style="padding: 20px; text-align: center;">No images found in this gallery.</p>
+    <?php endif; ?>
+</div>
+
+<div class="preview">
+    <button class="action action--close">
+        <i class="fa fa-times"></i><span class="text-hidden">Close</span>
+    </button>
+    <div class="description-preview"></div>
+</div>
+
 <script src="js/imagesloaded.pkgd.min.js"></script>
 <script src="js/masonry.pkgd.min.js"></script>
 <script src="js/classie.js"></script>
 <script src="js/main.js"></script>
+
 <script>
     (function () {
-        // create SVG circle overlay and append it to the preview element
-        function createCircleOverlay(previewEl) {
-            var dummy = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-            dummy.setAttributeNS(null, 'version', '1.1');
-            dummy.setAttributeNS(null, 'width', '100%');
-            dummy.setAttributeNS(null, 'height', '100%');
-            dummy.setAttributeNS(null, 'class', 'overlay');
-            var g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-            var circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-            circle.setAttributeNS(null, 'cx', 0);
-            circle.setAttributeNS(null, 'cy', 0);
-            circle.setAttributeNS(null, 'r', Math.sqrt(Math.pow(previewEl.offsetWidth, 2) + Math.pow(previewEl.offsetHeight, 2)));
-            dummy.appendChild(g);
-            g.appendChild(circle);
-            previewEl.appendChild(dummy);
-        }
+        // 1. On nettoie tout avant de commencer
+        const gridEl = document.querySelector('.grid');
+        if (!gridEl) return;
 
-        new GridFx(document.querySelector('.grid'), {
-            onInit: function (instance) {
-                createCircleOverlay(instance.previewEl);
-            },
-            onResize: function (instance) {
-                instance.previewEl.querySelector('svg circle').setAttributeNS(null, 'r', Math.sqrt(Math.pow(instance.previewEl.offsetWidth, 2) + Math.pow(instance.previewEl.offsetHeight, 2)));
-            },
-            onOpenItem: function (instance, item) {
-                // item's image
-                var gridImg = item.querySelector('img'),
-                    gridImgOffset = gridImg.getBoundingClientRect(),
-                    win = {
-                        width: document.documentElement.clientWidth,
-                        height: window.innerHeight
-                    },
-                    SVGCircleGroupEl = instance.previewEl.querySelector('svg > g'),
-                    SVGCircleEl = SVGCircleGroupEl.querySelector('circle');
+        // 2. On attend le chargement des images
+        // Note : Assure-toi que js/imagesloaded.pkgd.min.js est bien présent sur ton serveur
+        imagesLoaded(gridEl, { background: true }, function () {
+            console.log('Images chargées, initialisation de GridFx...');
 
-                SVGCircleEl.setAttributeNS(null, 'r', Math.sqrt(Math.pow(instance.previewEl.offsetWidth, 2) + Math.pow(instance.previewEl.offsetHeight, 2)));
-                // set the transform for the SVG g node. This will animate the circle overlay. The origin of the circle depends on the position of the clicked item.
-                if (gridImgOffset.left + gridImg.offsetWidth / 2 < win.width / 2) {
-                    SVGCircleGroupEl.setAttributeNS(null, 'transform', 'translate(' + win.width + ', ' + (gridImgOffset.top + gridImg.offsetHeight / 2 < win.height / 2 ? win.height : 0) + ')');
-                } else {
-                    SVGCircleGroupEl.setAttributeNS(null, 'transform', 'translate(0, ' + (gridImgOffset.top + gridImg.offsetHeight / 2 < win.height / 2 ? win.height : 0) + ')');
-                }
+            try {
+                new GridFx(gridEl, {
+                    onInit: function (instance) {
+                        // Fonction simple pour l'overlay sans fioritures
+                        const preview = instance.previewEl;
+                        if (!preview.querySelector('.overlay')) {
+                            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                            svg.setAttribute('class', 'overlay');
+                            svg.innerHTML = '<g><circle cx="0" cy="0" r="0"></circle></g>';
+                            preview.appendChild(svg);
+                        }
+                    }
+                });
+            } catch (e) {
+                console.error("Erreur GridFx : ", e);
             }
         });
     })();
 </script>
+
+<style>
+    /* Un petit correctif pour voir le bouton close même sans FontAwesome */
+    .action--close {
+        background: rgba(0, 0, 0, 0.5);
+        color: white;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+        line-height: 40px;
+    }
+
+    .action--close:after {
+        content: '✕';
+    }
+
+    /* X de secours si FontAwesome est bloqué */
+</style>

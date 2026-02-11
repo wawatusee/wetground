@@ -2,6 +2,8 @@
 //Racine du site
 define('ROOT', '../');
 define('PUBLIC_URL', '../public/');
+echo "";
+echo "";
 //Répertoire global des images
 define('IMG_URL',PUBLIC_URL.'img/');
 $repMedias=IMG_URL;
