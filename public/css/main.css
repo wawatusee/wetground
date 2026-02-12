@@ -8,3 +8,33 @@ main {
 }
 
 
+/* Le conteneur en grille */
+.gallery-mixte-container {
+  max-width: 800px;
+  margin: auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 20px 0;
+}
+
+/* Chaque cellule devient un cadre de hauteur fixe */
+.gallery-mixte-item {
+    height: 250px; /* Tu peux ajuster cette hauteur selon tes envies */
+    display: flex;
+    align-items: center;   /* Centrage vertical */
+    justify-content: center; /* Centrage horizontal */
+    background-color: #f9f9f9; /* Un fond léger pour voir le cadre */
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+/* L'image s'adapte à l'espace sans dépasser */
+.gallery-mixte-item img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    display: block;
+    object-fit: contain; /* Garde tout le contenu de l'image visible */
+}
