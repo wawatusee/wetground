@@ -1,6 +1,14 @@
-<p>
-    the pieces displayed on this page are not for sale. If you're interested in a picture on glass, don't hesitate to
-    contact me. You can choose colour and size!</p>
+
+<?php
+/*Classes requises pour alimenter la page*/
+require_once ROOT.'src/view/article_view.php';
+require_once ROOT.'src/model/gallery_model.php';
+require_once ROOT.'src/view/gallery_view_for_mixte.php';
+/*Fin des classes requises pour alimenter la page*/
+?>
+
+<?php (new ArticleView(ROOT.'json/articles/Catalog_advise.json', $lang))->render(); ?>
+
 
 
 <?php
@@ -22,7 +30,7 @@ $galleriesDatas = new ModelGalleryChoices('img/content/galleries/');
 $galleryChoices = $galleriesDatas->getGalleryChoices(); // Récupérer le tableau des galeries
 
 // Instancier et afficher le NOUVEAU menu de galerie (ACTIVÉ)
-$menuComponent = new ViewGalleryMenu($galleryChoices, $page, $selectedGallery);
+//$menuComponent = new ViewGalleryMenu($galleryChoices, $page, $selectedGallery);
 //MENU DYNAMIQUE PRENANT TOUS LES REPERTOIRES D'IMAGES PRESENTS dans galleries 
 // //$menuComponent->render(); // Affichage direct du menu
 //Le menu dynamique a été commenté pour être remplacé par un menu écrit ci dessous 

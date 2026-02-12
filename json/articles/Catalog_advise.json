@@ -1,0 +1,18 @@
+{
+    "type": "article",
+    "meta": {
+        "id": "Catalog_advise",
+        "created": "2026-02-12",
+        "updated": "2026-02-12"
+    },
+    "content": [
+        {
+            "type": "text",
+            "content": {
+                "fr": "Les œuvres présentées sur cette page ne sont pas à vendre. Si vous souhaitez une image sur verre, n'hésitez pas à me contacter. Vous pouvez choisir la couleur et la taille !",
+                "en": "the pieces displayed on this page are not for sale. If you're interested in a picture on glass, don't hesitate to contact me. You can choose colour and size!",
+                "nl": "De kunstwerken op deze pagina zijn niet te koop. Mocht u een afbeelding op glas willen, neem dan gerust contact met mij op. U kunt zelf de kleur en het formaat kiezen!"
+            }
+        }
+    ]
+}
