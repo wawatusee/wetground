@@ -8,7 +8,6 @@ define('ADMIN_PATH', __DIR__ . DIRECTORY_SEPARATOR);
 // Pages accessibles dans l’admin
 define('ADMIN_PAGES', [
     'dashboard',
-    'pages',
     'articles',
     'contacts'
 ]);

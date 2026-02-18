@@ -43,14 +43,19 @@ padding: 10px;
     display: flex;
     gap: .5rem;
     align-items: center;
+    margin-top: 0.5em;
 }
 
 .menulangues a {
+  color: var(--main-dark-color);
     text-decoration: none;
     padding: .2rem .5rem;
-    border: 1px solid #aaa;
+    border: 1px solid var(--main-dark-color);
     border-radius: 4px;
     font-size: .9rem;
+}
+.menulangues a:hover{
+color: var(--secondary-blue-color);
 }
 
 .menulangues a.active-lang {

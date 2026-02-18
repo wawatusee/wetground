@@ -10,9 +10,6 @@
 
     <ul>
         <li>
-            <a href="index.php?page=pages">➡ Gérer les pages</a>
-        </li>
-        <li>
             <a href="index.php?page=articles">➡ Gérer les articles</a>
         </li>
         <li>
