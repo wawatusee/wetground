@@ -16,10 +16,6 @@ class ImageUploader {
             throw new Exception("Invalid file upload: " . json_encode($file));
         }
 
-        if (!is_uploaded_file($file['tmp_name'])) {
-            throw new Exception("Invalid upload source");
-        }
-
         $fileInfo = getimagesize($file['tmp_name']);
         if ($fileInfo === false) {
             throw new Exception("Invalid image file");
@@ -32,23 +28,25 @@ class ImageUploader {
 
         // Récupère le nom original et l'extension
         $originalName = pathinfo($file['name'], PATHINFO_FILENAME);
-        $extension = image_type_to_extension($imageType);
+        $extension = image_type_to_extension($imageType); // Donne l'extension comme ".jpg" ou ".png"
 
-        // Empêche l'écrasement de fichiers existants (patch safe)
-        $newName = $originalName . '_' . time() . $extension;
+        // Utilise directement le nom original du fichier
+        $newName = $originalName . $extension;
 
         // Crée le répertoire de destination s'il n'existe pas
         if (!is_dir($this->uploadDir)) {
-            if (!mkdir($this->uploadDir, 0755, true)) {
+            if (!mkdir($this->uploadDir, 0777, true)) {
                 throw new Exception("Failed to create upload directory");
             }
         }
 
+        // Chemin complet du fichier cible
         $targetFile = $this->uploadDir . '/' . $newName;
 
+        // Déplace le fichier et redimensionne si nécessaire
         if (move_uploaded_file($file['tmp_name'], $targetFile)) {
             $this->resizeImage($targetFile, $imageType);
-            return $newName;
+            return $newName; // Retourne le nom du fichier final
         } else {
             throw new Exception("Failed to move uploaded file");
         }
@@ -56,6 +54,7 @@ class ImageUploader {
 
     // Méthode pour redimensionner une image
     private function resizeImage($filePath, $imageType) {
+        // Charge l'image selon son type
         switch ($imageType) {
             case IMAGETYPE_JPEG:
                 $image = imagecreatefromjpeg($filePath);
@@ -70,49 +69,26 @@ class ImageUploader {
                 throw new Exception("Unsupported image format");
         }
 
-        if (!$image) {
-            throw new Exception("Failed to read image");
-        }
-
         $origWidth = imagesx($image);
         $origHeight = imagesy($image);
-
-        if ($origWidth <= 0 || $origHeight <= 0) {
-            if ($image) imagedestroy($image);
-            throw new Exception("Invalid image dimensions");
-        }
-
         $aspectRatio = $origWidth / $origHeight;
 
-        if ($aspectRatio > 1) {
+        // Détermine les dimensions
+        if ($aspectRatio > 1) { // Paysage
             $newWidth = 1280;
             $newHeight = round(1280 / $aspectRatio);
-        } else {
+        } else { // Portrait
             $newHeight = 1280;
             $newWidth = round(1280 * $aspectRatio);
         }
 
         $newImage = imagecreatetruecolor($newWidth, $newHeight);
+        imagecopyresampled($newImage, $image, 0, 0, 0, 0, $newWidth, $newHeight, $origWidth, $origHeight);
 
-        // Préserve transparence PNG/GIF
-        if ($imageType == IMAGETYPE_PNG || $imageType == IMAGETYPE_GIF) {
-            imagealphablending($newImage, false);
-            imagesavealpha($newImage, true);
-        }
-
-        imagecopyresampled(
-            $newImage,
-            $image,
-            0, 0, 0, 0,
-            $newWidth,
-            $newHeight,
-            $origWidth,
-            $origHeight
-        );
-
+        // Sauvegarde de l'image
         switch ($imageType) {
             case IMAGETYPE_JPEG:
-                imagejpeg($newImage, $filePath, 85);
+                imagejpeg($newImage, $filePath);
                 break;
             case IMAGETYPE_PNG:
                 imagepng($newImage, $filePath);
@@ -122,17 +98,14 @@ class ImageUploader {
                 break;
         }
 
-        if ($image) imagedestroy($image);
-        if ($newImage) imagedestroy($newImage);
+        // Libération des ressources
+        imagedestroy($image);
+        imagedestroy($newImage);
     }
-
-    // Redimensionnement pour miniatures
+    // Méthode publique pour redimensionner une image à une largeur spécifique créée pour les miniatures
     public function resizeToWidth(string $inputPath, string $outputPath, int $width): void {
+        // Charger l'image selon son type
         $imageInfo = getimagesize($inputPath);
-        if ($imageInfo === false) {
-            throw new Exception("Invalid image file");
-        }
-
         $imageType = $imageInfo[2];
 
         switch ($imageType) {
@@ -149,43 +122,20 @@ class ImageUploader {
                 throw new Exception("Unsupported image format");
         }
 
-        if (!$image) {
-            throw new Exception("Failed to read image");
-        }
-
         $origWidth = imagesx($image);
         $origHeight = imagesy($image);
-
-        if ($origWidth <= 0 || $origHeight <= 0) {
-            if ($image) imagedestroy($image);
-            throw new Exception("Invalid image dimensions");
-        }
-
         $aspectRatio = $origWidth / $origHeight;
 
         $newWidth = $width;
         $newHeight = round($width / $aspectRatio);
 
         $newImage = imagecreatetruecolor($newWidth, $newHeight);
+        imagecopyresampled($newImage, $image, 0, 0, 0, 0, $newWidth, $newHeight, $origWidth, $origHeight);
 
-        if ($imageType == IMAGETYPE_PNG || $imageType == IMAGETYPE_GIF) {
-            imagealphablending($newImage, false);
-            imagesavealpha($newImage, true);
-        }
-
-        imagecopyresampled(
-            $newImage,
-            $image,
-            0, 0, 0, 0,
-            $newWidth,
-            $newHeight,
-            $origWidth,
-            $origHeight
-        );
-
+        // Sauvegarder l'image redimensionnée
         switch ($imageType) {
             case IMAGETYPE_JPEG:
-                imagejpeg($newImage, $outputPath, 85);
+                imagejpeg($newImage, $outputPath);
                 break;
             case IMAGETYPE_PNG:
                 imagepng($newImage, $outputPath);
@@ -195,7 +145,8 @@ class ImageUploader {
                 break;
         }
 
-        if ($image) imagedestroy($image);
-        if ($newImage) imagedestroy($newImage);
+        // Libérer les ressources
+        imagedestroy($image);
+        imagedestroy($newImage);
     }
 }

@@ -11,6 +11,7 @@
             <li>
                 <a href="index.php?logout=1">Se déconnecter</a>
             </li>
+            <li><a href="galleries.php">Images</a></li>
         </ul>
     </nav>
 </header>

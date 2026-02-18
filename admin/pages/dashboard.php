@@ -10,13 +10,10 @@
 
     <ul>
         <li>
-            <a href="index.php?page=pages">➡ Gérer les pages</a>
-        </li>
-        <li>
             <a href="index.php?page=articles">➡ Gérer les articles</a>
         </li>
         <li>
-            <a href="index.php?page=galleries">➡ Gérer les galeries d’images</a>
+            <a href="galleries.php">➡ Gérer les galeries d’images</a>
         </li>
     </ul>
 

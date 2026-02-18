@@ -1,55 +1,9 @@
 <?php
-// 1. Dépendances
-require_once '../src/utils/json_loader.php';
-require_once '../src/model/article_model.php';
-require_once '../src/view/article_view.php';
-
-$lang = $_GET['lang'] ?? 'fr';
-
-// 2. On charge le "PLAN DE MONTAGE" (le layout)
-$layoutPath = '../json/pages/workshops.json';
-
-try {
-    $pageStructure = JsonLoader::load($layoutPath);
-    $blocks = $pageStructure['layout'] ?? [];
-} catch (Exception $e) {
-    $blocks = [];
-}
+/*Classes requises pour alimenter la page*/
+require_once ROOT.'src/view/article_view.php';
+require_once ROOT.'src/model/gallery_model.php';
+require_once ROOT.'src/view/gallery_view_for_mixte.php';
+/*Fin des classes requises pour alimenter la page*/
 ?>
-
-<section class="core">
-    <?php 
-    // 3. On boucle sur chaque bloc défini dans l'admin
-    foreach ($blocks as $block): 
-        
-        // SI c'est une référence à un article
-        if ($block['type'] === 'article_ref'):
-            $articleFile = '../json/articles/' . $block['filename'];
-            
-            try {
-                if (file_exists($articleFile)) {
-                    $data  = JsonLoader::load($articleFile);
-                    $model = new ArticleModel($data);
-                    $view  = new ArticleView($model->getData(), $lang);
-                    
-                    // Rendu immédiat du bloc
-                    $view->render();
-                }
-            } catch (Exception $e) {
-                echo "";
-            }
-
-        // SI c'est un composant spécial (Hero, Formulaire, etc.)
-        elseif ($block['type'] === 'ui_component'):
-            // Ici, on pourra inclure des fichiers de vue spécifiques plus tard
-            // include '../src/view/components/' . $block['name'] . '.php';
-            echo "<div class='ui-comp'>Composant : " . $block['name'] . "</div>";
-        endif;
-
-    endforeach; 
-
-    // Message si la page est vide
-    if (empty($blocks)): ?>
-        <p>Cette page n'a pas encore de contenu.</p>
-    <?php endif; ?>
-</section>
+<?php (new ArticleView(ROOT.'json/articles/workshop.json', $lang))->render(); ?>
+<?php GalleryViewForMixte::display('WORKSHOPS'); ?>

@@ -1,5 +1,9 @@
 <?php
-// On pourrait ici charger une liste de contacts existants pour la sidebar si besoin
+
+// Charger la config
+$configJson = file_get_contents('../json/config.json');
+$configData = json_decode($configJson, true);
+$activeLangs = $configData['config']['langs']; // ['fr' => 'Français', 'en' => 'English', ...]
 ?>
 <div class="editor-container">
     <section id="contact-editor" class="main-editor">
@@ -21,34 +25,42 @@
                     <input type="email" id="contact-email" placeholder="nom@exemple.be">
                 </div>
             </div>
-            <div class="grid-2-col">
-                <div class="input-group">
-                    <label>Rôle (FR)</label>
-                    <input type="text" id="contact-role-fr" placeholder="Maître Verrier">
-                </div>
-                <div class="input-group">
-                    <label>Role (EN)</label>
-                    <input type="text" id="contact-role-en" placeholder="Master Glassmaker">
-                </div>
-            </div>
+
         </div>
         <div class="editor-section">
-            <h3><i class="fas fa-map-marker-alt"></i> Localisation</h3>
-            <div class="grid-2-col">
-                <div class="input-group">
-                    <label>Adresse (FR)</label>
-                    <textarea id="contact-address-fr" rows="3" placeholder="Rue de la Constitution, 13..."></textarea>
-                </div>
-                <div class="input-group">
-                    <label>Address (EN)</label>
-                    <textarea id="contact-address-en" rows="3" placeholder="13 Constitution Street..."></textarea>
-                </div>
+            <h3><i class="fas fa-id-card"></i> Rôles (Multilingue)</h3>
+            <div class="grid-langs">
+                <?php foreach ($activeLangs as $code => $name): ?>
+                    <div class="input-group">
+                        <label>Rôle (
+                            <?= $name ?>)
+                        </label>
+                        <input type="text" id="contact-role-<?= $code ?>" class="input-role" data-lang="<?= $code ?>"
+                            placeholder="Ex: Maître Verrier">
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+
+        <div class="editor-section">
+            <h3><i class="fas fa-map-marker-alt"></i> Localisation (Multilingue)</h3>
+            <div class="grid-langs">
+                <?php foreach ($activeLangs as $code => $name): ?>
+                    <div class="input-group">
+                        <label>Adresse (
+                            <?= $name ?>)
+                        </label>
+                        <textarea id="contact-address-<?= $code ?>" class="input-address" data-lang="<?= $code ?>"
+                            rows="3"></textarea>
+                    </div>
+                <?php endforeach; ?>
             </div>
             <div class="input-group">
                 <label>Lien OpenStreetMap (URL court osm.org)</label>
                 <input type="text" id="contact-map-url" placeholder="https://osm.org/go/...">
             </div>
         </div>
+
 
         <div class="editor-section">
             <h3><i class="fas fa-share-alt"></i> Réseaux Sociaux & Liens</h3>
@@ -88,5 +100,10 @@
     </div>
 
 </template>
+
+<script>
+    window.siteLangs = <?= json_encode(array_keys($activeLangs)) ?>;
+    console.log("Langues actives chargées :", window.siteLangs); // Pour vérifier dans la console
+</script>
 
 <script src="js/contact_editor.js"></script>

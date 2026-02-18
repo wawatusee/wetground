@@ -44,6 +44,26 @@ const PageBlockTemplates = {
                     </div>
                 </div>`;
     },
+    gallery_ref: (id, data = {}) => {
+        const selected = data.folder || '';
+        const options = (window.availableGalleries || [])
+            .map(folder => `<option value="${folder}" ${selected === folder ? 'selected' : ''}>${folder}</option>`)
+            .join('');
+
+        return `
+        <div class="block-item" data-id="${id}" data-type="gallery_ref">
+            <div class="block-header">
+                <strong>🖼️ Galerie Photo</strong>
+                <button class="btn-delete-block" onclick="this.closest('.block-item').remove()">×</button>
+            </div>
+            <div class="block-body">
+                <select class="data-folder">
+                    <option value="">-- Sélectionner un dossier de photos --</option>
+                    ${options}
+                </select>
+            </div>
+        </div>`;
+    },
     contact_ref: (id, data = {}) => {
         const selected = data.filename || '';
         // On utilise window.availableContacts chargé via l'API
@@ -160,6 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const blockData = { type: type };
             if (type === 'article_ref') blockData.filename = el.querySelector('.data-filename').value;
             if (type === 'ui_component') blockData.name = el.querySelector('.data-comp-name').value;
+            if (type === 'gallery_ref') blockData.folder = el.querySelector('.data-folder').value;
             blocks.push(blockData);
         });
 

@@ -5,12 +5,13 @@
     "map_url": "https:\/\/osm.org\/go\/0EoTm3Isy",
     "role": {
         "fr": "Atelier de vitraux",
-        "en": "Glass maker Atelier"
+        "en": "Glass maker Atelier",
+        "nl": "Glas-in-lood atelier"
     },
     "address": {
         "fr": "rue de la Constitution, 13. 1030 Schaerbeek - Belgium",
-        "en": "13 Constitution street.1030 Schaerbeek - Belgium",
-        "nl":"Wet ground strasse. 1030 Schaerbeek"
+        "en": "13 Constitution street.1030 Schaerbeek - Belgioum",
+        "nl": "Wet ground strasse. 1030 Schaerbeek"
     },
     "socials": [
         {
