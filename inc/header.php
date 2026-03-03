@@ -17,7 +17,7 @@ $lexique_header_sstre = [
    <div class="mainTitleBlock">
       <h1 class="mainsubtitle">
          <span class="title-elmt">wet ground</span>
-         <span class="title-elmt"> <?= $lexique_header_sstre[$lang] ?? $lexique_header_sstre['fr']; ?></span>
+         <!--<span class="title-elmt"> <?= $lexique_header_sstre[$lang] ?? $lexique_header_sstre['fr']; ?></span>-->
       </h1>
       <h2><?= $lexique_header_devise[$lang] ?? $lexique_header_devise['fr']; ?></h2>
    </div>

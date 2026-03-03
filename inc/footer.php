@@ -2,7 +2,7 @@
 require_once '../src/model/contact_model.php';
 
 
-// 1. On charge le fichier JSON que tu viens de créer via l'admin
+// 1. On charge le fichier JSON
 $jsonPath = '../json/contacts/wetground.json';
 $jsonRaw = file_get_contents($jsonPath);
 $data = json_decode($jsonRaw, true);
@@ -16,7 +16,7 @@ $d = $contactModel;
     <div class="footerNav">
 
         <nav class="navfooterbloc">
-            <h2>Contacts</h2>
+            
 
             <address>
                 <a class="maillink" href=<?= $d->get('email') ?> target="_blank"><?= str_replace('@', '[at]', $d->get('email')) ?></a>
@@ -26,10 +26,7 @@ $d = $contactModel;
                 </a>
             </address>
         </nav>
-        <nav class="navfooterbloc">
-            <h2>Menu</h2>
-            <?php echo $menuMain_view ?>
-        </nav>
+
     </div>
 
 
