@@ -17,9 +17,4 @@ require_once ROOT.'src/view/gallery_view_for_mixte.php';
 // Affiche une galerie (dupliquer ce bloc php avec un autre identifiant pour ajouter une galerie)
 GalleryViewForMixte::display('WORKSHOPS');
 //Fin Bloc galerie
-?><?php
-//Bloc galerie
-// Affiche une galerie (dupliquer ce bloc php avec un autre identifiant pour ajouter une galerie)
-GalleryViewForMixte::display('MOSAIC-WORKSHOP-SCHEDULE');
-//Fin Bloc galerie
 ?>

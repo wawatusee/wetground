@@ -1,11 +1,16 @@
+
 <?php
 /*Classes requises pour alimenter la page*/
-require_once ROOT . 'src/view/article_view.php';
-require_once ROOT . 'src/model/gallery_model.php';
-require_once ROOT . 'src/view/gallery_view_for_mixte.php';
+require_once ROOT.'src/view/article_view.php';
+require_once ROOT.'src/model/gallery_model.php';
+require_once ROOT.'src/view/gallery_view_for_mixte.php';
 /*Fin des classes requises pour alimenter la page*/
 ?>
-<?php (new ArticleView(ROOT . 'json/articles/Catalog_advise.json', $lang))->render(); ?>
+
+<?php (new ArticleView(ROOT.'json/articles/Catalog_advise.json', $lang))->render(); ?>
+
+
+
 <?php
 // Récupérer la galerie sélectionnée et la page courante
 $selectedGallery = isset($_GET['gallery']) ? htmlspecialchars($_GET['gallery']) : '';
@@ -21,20 +26,34 @@ require_once('../src/model/model_galleries_choices.php');
 require_once('../src/view/view_gallery_menu.php');
 
 // Récupérer les données des galeries (DECOMMENTÉ)
-$galleriesModel = new ModelGalleryChoices('img/content/galleries/', ROOT . 'json/galleries_config.json');
-$galleryChoices = $galleriesModel->getGalleryChoices($lang); // Retourne [ 'FOLDER' => 'Label Traduit' ]
+$galleriesDatas = new ModelGalleryChoices('img/content/galleries/');
+$galleryChoices = $galleriesDatas->getGalleryChoices(); // Récupérer le tableau des galeries
 
-// Affichage du menu
-echo '<ul class="responsiveMenu">';
-foreach ($galleryChoices as $folder => $label) {
-    $selected = ($selectedGallery === $folder) ? 'selected-item' : '';
-    echo "<li class='gallery-item $selected'>";
-    echo "<a href='?page=catalog&gallery=" . urlencode($folder) . "&lang=$lang'>" . htmlspecialchars($label) . "</a>";
-    echo "</li>";
-}
-echo '</ul>';
+// Instancier et afficher le NOUVEAU menu de galerie (ACTIVÉ)
+//$menuComponent = new ViewGalleryMenu($galleryChoices, $page, $selectedGallery);
+//MENU DYNAMIQUE PRENANT TOUS LES REPERTOIRES D'IMAGES PRESENTS dans galleries 
+// //$menuComponent->render(); // Affichage direct du menu
+//Le menu dynamique a été commenté pour être remplacé par un menu écrit ci dessous 
+?>
+<?php
+//MENU EN DUR POUR PAGE CATALOG BREGJE UNE AUTRE INTERFACE SERAIT PREFERABLE
+$menuItems = [
+    'LEAD+TIFFANY' => 'LEAD+TIFFANY',
+    'PICTURE-ON-GLASS' => 'PICTURE-ON-GLASS'
+];
+?>
+<ul class="gallery-menu" id="galleryMenu">
+    <?php foreach ($menuItems as $value => $label): ?>
+        <li class="gallery-item <?= ($selectedGallery === $value) ? 'selected-item' : '' ?>">
+            <a href="?page=catalog&gallery=<?= urlencode($value) ?>">
+                <?= htmlspecialchars($label) ?>
+            </a>
+        </li>
+    <?php endforeach; ?>
+</ul>
+    <!--FIN DU MENU EN DUR POUR PAGE CATALOG BREGJE-->
 
-
+<?php
 // Instancier et afficher le sélecteur de galerie (COMMENTÉ)
 /*
 $multiChoicesComponent = new ViewGalleryChoices($galleryChoices, $page, $selectedGallery);

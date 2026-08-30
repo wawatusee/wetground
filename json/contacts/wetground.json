@@ -21,6 +21,10 @@
         {
             "platform": "instagram",
             "value": "wetground_expo"
+        },
+        {
+            "platform": "facebook",
+            "value": "bregje.vdo"
         }
     ]
 }

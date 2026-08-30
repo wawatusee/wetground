@@ -15,6 +15,9 @@
         <li>
             <a href="galleries.php">➡ Gérer les galeries d’images</a>
         </li>
+                <li>
+            <a href="index.php?page=admin_catalog">➡ Gérer les galeries du catalogue</a>
+        </li>
     </ul>
 
 </section>

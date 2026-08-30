@@ -45,7 +45,8 @@
 .contacts-phonelink::before,
 .contacts-whatsapplink::before,
 .contacts-instagram::before,
-.contacts-adress::before {
+.contacts-adress::before,
+.contacts-facebooklink {
   position: relative;
   top: 10px;
   left: -10px;
@@ -61,6 +62,9 @@
 
 .contacts-instagram::before {
   content: url('/public/img/deco/icons8-instagram-30.png');
+}
+.contacts-facebooklink{
+  content:url('/public/img/deco/icons8-facebook-30.png');
 }
 
 .contacts-adress::before {

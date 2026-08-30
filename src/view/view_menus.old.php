@@ -14,24 +14,27 @@ class ViewMenu
 
     /**
      * Génère un menu principal
+     *
+     * @param array $menuArray Tableau d'objets menu (propriétés : page, titre->{lang})
+     * @param bool $singlePage True si navigation ancre (#), false si navigation classique (?page=)
+     * @param string|null $currentPage La page actuellement active
+     * @return string HTML du menu
      */
     public function getViewMainMenu(array $menuArray, bool $singlePage = true, ?string $currentPage = null): string
     {
-        // On réinitialise pour éviter de doubler le menu si la méthode est appelée deux fois
-        $this->viewMenu = "";
-
         foreach ($menuArray as $item) {
+            // Protection XSS
             $page = htmlspecialchars($item->page);
             $title = htmlspecialchars($item->titre->{$this->lang});
+
+            // Vérifie si c'est la page active
             $isActive = ($currentPage === $item->page) ? " active" : "";
 
+            // Génère le lien
             if ($singlePage) {
-                // Pour une Single Page App avec ancres, on peut quand même garder le paramètre lang dans l'URL
-                $this->viewMenu .= "<a class='itemMenu{$isActive}' href='?lang={$this->lang}#{$page}'>{$title}</a>";
+                $this->viewMenu .= "<a class='itemMenu{$isActive}' href='#{$page}'>{$title}</a>";
             } else {
-                // FORME DEMANDÉE : index.php?page=catalog&lang=en
-                // Note : On utilise &amp; pour la validité HTML du lien
-                $this->viewMenu .= "<a class='itemMenu{$isActive}' href='index.php?page={$page}&amp;lang={$this->lang}'>{$title}</a>";
+                $this->viewMenu .= "<a class='itemMenu{$isActive}' href='?page={$page}'>{$title}</a>";
             }
         }
 
@@ -43,15 +46,12 @@ class ViewMenu
      */
     public function getViewMainMenuFromExt(array $menuArray, bool $singlePage = true, ?string $currentPage = null): string
     {
-        $this->viewMenu = "";
-
         foreach ($menuArray as $item) {
             $page = htmlspecialchars($item->page);
             $title = htmlspecialchars($item->titre->{$this->lang});
             $isActive = ($currentPage === $item->page) ? " active" : "";
 
-            // Consistance avec le format souhaité pour les ancres externes
-            $this->viewMenu .= "<a class='itemMenu{$isActive}' href='index.php?page={$page}&amp;lang={$this->lang}#{$page}'>{$title}</a>";
+            $this->viewMenu .= "<a class='itemMenu{$isActive}' href='index.php?lang={$this->lang}#{$page}'>{$title}</a>";
         }
 
         return $this->viewMenu;

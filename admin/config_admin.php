@@ -9,7 +9,8 @@ define('ADMIN_PATH', __DIR__ . DIRECTORY_SEPARATOR);
 define('ADMIN_PAGES', [
     'dashboard',
     'articles',
-    'contacts'
+    'contacts',
+    'admin_catalog'
 ]);
 
 // Dossiers JSON des contenus (Utilisation de ROOT_PATH pour la clarté)

@@ -1,0 +1,27 @@
+{
+    "LEAD+TIFFANY": {
+        "visible": true,
+        "label_fr": "LEAD+TIFFANY",
+        "label_en": "LEAD+TIFFANY"
+    },
+    "MOSAIC-WORKSHOP-SCHEDULE": {
+        "visible": false,
+        "label_fr": "MOSAIC-WORKSHOP-SCHEDULE",
+        "label_en": "MOSAIC-WORKSHOP-SCHEDULE"
+    },
+    "PICTURE-ON-GLASS": {
+        "visible": true,
+        "label_fr": "PICTURE-ON-GLASS",
+        "label_en": "PICTURE-ON-GLASS"
+    },
+    "WORKSHOPS": {
+        "visible": false,
+        "label_fr": "WORKSHOPS",
+        "label_en": "WORKSHOPS"
+    },
+    "WORKSTATIONS": {
+        "visible": false,
+        "label_fr": "WORKSTATIONS",
+        "label_en": "WORKSTATIONS"
+    }
+}
