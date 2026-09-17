@@ -41,9 +41,13 @@ $multiChoicesComponent = new ViewGalleryChoices($galleryChoices, $page, $selecte
 $multiChoicesComponent->render(); // Affichage direct du sélecteur
 */
 
-// Définir la galerie courante à afficher
-$galleryName = !empty($selectedGallery) && in_array($selectedGallery, $galleryChoices)
-    ? $selectedGallery : (isset($galleryChoices[0]) ? $galleryChoices[0] : null);
+// Définir la galerie courante à afficher.
+// Si aucune galerie n'est sélectionnée, afficher la première galerie visible.
+if (!empty($selectedGallery) && array_key_exists($selectedGallery, $galleryChoices)) {
+    $galleryName = $selectedGallery;
+} else {
+    $galleryName = array_key_first($galleryChoices);
+}
 
 // Inclure et afficher les vues de la galerie
 require_once('../src/model/gallery_model.php');
