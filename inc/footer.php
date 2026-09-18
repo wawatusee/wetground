@@ -1,39 +1,75 @@
 <?php
 require_once '../src/model/contact_model.php';
-require_once '../src/view/contact_view.php';
-// 1. On charge le fichier JSON
+
 $jsonPath = '../json/contacts/wetground.json';
 $jsonRaw = file_get_contents($jsonPath);
 $data = json_decode($jsonRaw, true);
 
-// 2. Initialisation du Model et de la View
-$contactModel = new ContactModel($data);
-$d = $contactModel;
+$d = new ContactModel($data);
 ?>
+
 <footer>
     <div class="footerNav">
-        <nav class="navfooterbloc">
+
+        <!-- Coordonnées -->
+        <nav class="navfooterbloc footer-contact">
             <address>
-                <a class="situationlink" href="<?= $d->get('map_url') ?>" target="_blank" rel="noopener">
+                <a class="situationlink"
+                   href="<?= $d->get('map_url') ?>"
+                   target="_blank"
+                   rel="noopener">
                     <?= nl2br($d->get('address', $lang)) ?>
                 </a>
-                <a class="maillink" href=<?= $d->get('email') ?> target="_blank"><?= str_replace('@', '[at]', $d->get('email')) ?></a>
-                <a class="phonelink" href="tel:+32488191471">+32(0)488/19.14.71</a>
 
+                <a class="maillink"
+                   href="mailto:<?= $d->get('email') ?>">
+                    <?= str_replace('@', '[at]', $d->get('email')) ?>
+                </a>
+
+                <a class="phonelink"
+                   href="tel:<?= $d->getCleanPhone() ?>">
+                    <?= $d->get('phone') ?>
+                </a>
             </address>
-
         </nav>
-        <nav class="navfooterbloc">
-            <address>
 
-                <?php var_dump($d->getSocials());
-$contactView = new ContactView($d, $lang);
-echo $contactView->render();
-                    ?>
+        <!-- Réseaux sociaux -->
+        <nav class="navfooterbloc footer-socials">
+            <?php foreach ($d->getSocials() as $social): ?>
 
+                <?php
+                $platform = $social['platform'];
+                $value = $social['value'];
 
-            </address>
+                switch ($platform) {
+                    case 'whatsapp':
+                        $url = 'https://wa.me/' . preg_replace('/[^0-9]/', '', $value);
+                        break;
 
+                    case 'instagram':
+                        $url = 'https://instagram.com/' . ltrim($value, '@');
+                        break;
+
+                    case 'facebook':
+                        $url = strpos($value, 'http') === 0
+                            ? $value
+                            : 'https://facebook.com/' . ltrim($value, '/');
+                        break;
+
+                    default:
+                        $url = $value;
+                }
+                ?>
+
+                <a class="footer-sociallink footer-<?= htmlspecialchars($platform) ?>"
+                   href="<?= htmlspecialchars($url) ?>"
+                   target="_blank"
+                   rel="noopener">
+                    <?= ucfirst(htmlspecialchars($platform)) ?>
+                </a>
+
+            <?php endforeach; ?>
         </nav>
+
     </div>
 </footer>

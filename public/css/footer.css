@@ -91,49 +91,42 @@ address {
   .situationlink::before {
     content: none;
     /* Fait disparaître le contenu des pseudo-éléments ::before */
+        .footerNav {
+        flex-direction: column;
+    }
+
+    .footer-socials {
+        width: 100%;
+    }
   }
 }
 
-/*Block  rsMenu*/
-.nav-rs {
-  display: flex;
-  justify-content: center;
-  background-color: var(--batho-noir);
+/* Réseaux sociaux du footer */
+
+.footer-socials {
+    display: flex;
+    flex-direction: column;
 }
 
-.nav-rs a {
-  display: inline-block;
+.footer-sociallink::before {
+    position: relative;
+    top: 0.3em;
+    left: -10px;
+    /*Transforme les icones de noires à blanches*/
+    filter: invert(1);
 }
 
-.rs {
-  height: 30px;
-  width: 30px;
-  background-image: url("../img/deco/logo-rs_30px.png");
-  background-position-y: 0;
-  margin: var(--standartspace);
+.footer-whatsapp::before {
+    content: url('/public/img/deco/icons8-whatsapp-30.png');
 }
 
-.rs:hover {
-  background-position-y: -30px;
+.footer-instagram::before {
+    content: url('/public/img/deco/icons8-instagram-30.png');
 }
 
-.facebook {
-  background-position-x: 0;
+.footer-facebook::before {
+    content: url('/public/img/deco/icons8-facebook-30.png');
 }
-
-.instagram {
-  background-position-x: -30px;
-}
-
-.youtube {
-  background-position-x: -90px;
-}
-
-.flickr {
-  background-position-x: -150px;
-}
-
-/*End RSmenu*/
 
 /* end footerNav*/
 /**********************/

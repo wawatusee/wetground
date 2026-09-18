@@ -63,7 +63,7 @@
 .contacts-instagram::before {
   content: url('/public/img/deco/icons8-instagram-30.png');
 }
-.contacts-facebooklink{
+.contacts-facebooklink::before{
   content:url('/public/img/deco/icons8-facebook-30.png');
 }
 
