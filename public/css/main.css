@@ -38,3 +38,27 @@ main {
     display: block;
     object-fit: contain; /* Garde tout le contenu de l'image visible */
 }
+/* Diaporama simple */
+
+.gallery-slideshow {
+    max-width: 800px;
+    height: 500px;
+    margin: 20px auto;
+    position: relative;
+    overflow: hidden;
+}
+
+.gallery-slideshow-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+
+    opacity: 0;
+    transition: opacity 0.8s ease;
+}
+
+.gallery-slideshow-image.active {
+    opacity: 1;
+}
