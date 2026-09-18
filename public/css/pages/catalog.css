@@ -222,10 +222,7 @@
     /* NOUVELLE LIGNE POUR LE CENTRAGE HORIZONTAL */
     justify-content: center; 
     /* ************************************************* */
-    
     flex-wrap: wrap; 
-    
-    list-style: none; 
     padding: 0;
     margin: var(--standartspace) 0; 
     gap: var(--standartspace);
@@ -238,8 +235,10 @@
 Note: Avec gap sur le UL, nous n'avons plus besoin de margin-right sur le LI,
 ce qui simplifie la gestion des marges.
 */
-.gallery-item {
-    /* Le LI est défini par son contenu */
+ .gallery-item {
+    
+    list-style: none;
+
 }
 
 /* 3. Style du Lien (A) - L'élément cliquable */

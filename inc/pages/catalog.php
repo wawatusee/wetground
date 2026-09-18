@@ -1,73 +1,113 @@
 <?php
-/*Classes requises pour alimenter la page*/
+
+/* Classes requises pour alimenter la page */
 require_once ROOT . 'src/view/article_view.php';
 require_once ROOT . 'src/model/gallery_model.php';
+require_once ROOT . 'src/model/model_galleries_choices.php';
+require_once ROOT . 'src/view/gallery_view.php';
 require_once ROOT . 'src/view/gallery_view_for_mixte.php';
-/*Fin des classes requises pour alimenter la page*/
-?>
-<?php (new ArticleView(ROOT . 'json/articles/Catalog_advise.json', $lang))->render(); ?>
-<?php
-// Récupérer la galerie sélectionnée et la page courante
-$selectedGallery = isset($_GET['gallery']) ? htmlspecialchars($_GET['gallery']) : '';
-$page = isset($_GET['page']) ? htmlspecialchars($_GET['page']) : 1;
 
-// Inclure les modèles et vues
-require_once('../src/model/model_galleries_choices.php');
-//remplacement du sélecteur par un menu simple
-// L'ancienne vue est commentée
-//require_once('../src/view/view_galleries_choices.php');
-
-// Inclusion de la nouvelle vue
-require_once('../src/view/view_gallery_menu.php');
-
-// Récupérer les données des galeries (DECOMMENTÉ)
-$galleriesModel = new ModelGalleryChoices('img/content/galleries/', ROOT . 'json/galleries_config.json');
-$galleryChoices = $galleriesModel->getGalleryChoices($lang); // Retourne [ 'FOLDER' => 'Label Traduit' ]
-
-// Affichage du menu
-echo '<ul class="responsiveMenu">';
-foreach ($galleryChoices as $folder => $label) {
-    $selected = ($selectedGallery === $folder) ? 'selected-item' : '';
-    echo "<li class='gallery-item $selected'>";
-    echo "<a href='?page=catalog&gallery=" . urlencode($folder) . "&lang=$lang'>" . htmlspecialchars($label) . "</a>";
-    echo "</li>";
-}
-echo '</ul>';
+/* Article d'introduction */
+(new ArticleView(
+    ROOT . 'json/articles/Catalog_advise.json',
+    $lang
+))->render();
 
 
-// Instancier et afficher le sélecteur de galerie (COMMENTÉ)
 /*
-$multiChoicesComponent = new ViewGalleryChoices($galleryChoices, $page, $selectedGallery);
-$multiChoicesComponent->render(); // Affichage direct du sélecteur
-*/
+ * Galerie sélectionnée
+ */
+$selectedGallery = isset($_GET['gallery'])
+    ? htmlspecialchars($_GET['gallery'])
+    : '';
 
-// Définir la galerie courante à afficher.
-// Si aucune galerie n'est sélectionnée, afficher la première galerie visible.
-if (!empty($selectedGallery) && array_key_exists($selectedGallery, $galleryChoices)) {
+
+/*
+ * Récupération des galeries visibles
+ */
+$galleriesModel = new ModelGalleryChoices(
+    'img/content/galleries/',
+    ROOT . 'json/galleries_config.json'
+);
+
+$galleryChoices = $galleriesModel->getGalleryChoices($lang);
+
+
+/*
+ * Détermination de la galerie à afficher
+ *
+ * Si aucune galerie n'est sélectionnée dans l'URL,
+ * on affiche automatiquement la première galerie visible.
+ */
+if (
+    !empty($selectedGallery)
+    && array_key_exists($selectedGallery, $galleryChoices)
+) {
     $galleryName = $selectedGallery;
 } else {
     $galleryName = array_key_first($galleryChoices);
 }
 
-// Inclure et afficher les vues de la galerie
-require_once('../src/model/gallery_model.php');
-require_once("../src/view/gallery_view.php");
 
-// Chemin des images pour la galerie sélectionnée
-$cheminImages = $repImg . 'galleries/' . $galleryName . '/original';
+/*
+ * Menu des galeries
+ */
+echo '<ul class="responsiveMenu">';
 
-try {
-    // Instancie le modèle pour obtenir les images
-    $gallery = new Model_gallery($cheminImages, 'image/jpeg');
-    $images = $gallery->getImages();
-    //Important, en deuxième paramètre de l'instance de View_gallery, le nom du dossier à traiter $galleryName
-// Crée la vue avec la classe View_gallery
-    $view = new View_gallery($images, $galleryName);
-    echo $view->render(); // Affiche la galerie
-} catch (Exception $e) {
-    echo "Erreur : " . $e->getMessage();
+foreach ($galleryChoices as $folder => $label) {
+
+    $selected = ($galleryName === $folder)
+        ? 'selected-item'
+        : '';
+
+    $href = '?page=catalog&gallery='
+        . urlencode($folder)
+        . '&lang='
+        . urlencode($lang);
+
+    echo "<li class='gallery-item $selected'>";
+    echo '<a href="' . htmlspecialchars($href) . '">'
+        . htmlspecialchars($label)
+        . '</a>';
+    echo '</li>';
 }
-?>
+
+echo '</ul>';
+
+
+/*
+ * Affichage de la galerie
+ */
+if ($galleryName !== null) {
+
+    $cheminImages = $repImg
+        . 'galleries/'
+        . $galleryName
+        . '/original';
+
+    try {
+
+        $gallery = new Model_gallery(
+            $cheminImages,
+            'image/jpeg'
+        );
+
+        $images = $gallery->getImages();
+
+        $view = new View_gallery(
+            $images,
+            $galleryName
+        );
+
+        echo $view->render();
+
+    } catch (Exception $e) {
+
+        echo 'Erreur : '
+            . htmlspecialchars($e->getMessage());
+    }
+}
+
 ?>
 <!-- /container -->
 <script src="js/imagesloaded.pkgd.min.js"></script>
